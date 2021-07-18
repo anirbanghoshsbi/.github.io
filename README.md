@@ -13,7 +13,7 @@ These are the breadth indicators of BSE
 
 [This is the Above 50 DMA Indicator of the BSE SECTORS ](https://github.com/anirbanghoshsbi/.github.io/blob/master/BSE_Advance_Decline.ipynb)
 
-[This is the Above 50 DMA Indicator of Large , Mid , Small Cap Sector BSE](https://github.com/anirbanghoshsbi/.github.io/blob/master/BSE_large_mid_small_above_50DMA_B.ipynb)
+[This is the Above 50 DMA Indicator of Large , Mid , Small Cap Sector BSE](https://github.com/anirbanghoshsbi/.github.io/blob/master/BSE_above_50DMA_large_mid_small_B.ipynb)
 
 [This is the hidden Markov Model for Market Regime Detection](https://github.com/anirbanghoshsbi/.github.io/blob/master/Hidden_Markov_Model.ipynb)
 
