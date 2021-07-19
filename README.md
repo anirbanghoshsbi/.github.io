@@ -1,4 +1,3 @@
-# anirbanghoshsbi.github.io
 # These are the breadth indicators of Nifty
 
 [This is the Advance Decline Indicator of Nifty 100 Index ](https://github.com/anirbanghoshsbi/.github.io/blob/master/Advance_Decline_Nifty100B.ipynb)
