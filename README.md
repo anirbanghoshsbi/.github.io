@@ -25,3 +25,7 @@
 # Misc Model For Anamoly Detection in Stock Price
 
 [This is the Deep Learning Model based on Autoencoders that can be used for detecting anamoly in Stock Market Prices](https://github.com/anirbanghoshsbi/.github.io/blob/master/Stock_Price_anomaly_detection_Using_Stupid_Deep_Learning.ipynb)
+
+
+# Momentum Investing : Quant Strategy
+[Stocks Showing Momentum](https://github.com/anirbanghoshsbi/nifty500/blob/main/momentum_strategy.py)
