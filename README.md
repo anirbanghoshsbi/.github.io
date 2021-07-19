@@ -28,4 +28,4 @@
 
 
 # Momentum Investing : Quant Strategy
-[Stocks Showing Momentum](https://github.com/anirbanghoshsbi/nifty500/blob/main/momentum_strategy.py)
+[Stocks Showing Momentum](https://github.com/anirbanghoshsbi/.github.io/blob/master/Momentum_Strategy.ipynb)
