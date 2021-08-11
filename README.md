@@ -24,8 +24,12 @@
 
 
 # Machine Learning Model
+
+## Model 1
 [This is a Machine Learning Model for Trading Using Breadth of Stock Market](https://github.com/anirbanghoshsbi/.github.io/blob/master/Combined_Above_i%7BDMA%7D_RandomForest.ipynb)
 
+
+## Model 2
 [This is a Machine Learning Model for Trading Using Technical Analysis of Stock Market](https://github.com/anirbanghoshsbi/.github.io/blob/master/Random_forest_Modular_Correct(Daily_New).ipynb)
 
 # Misc Model For Anamoly Detection in Stock Price
