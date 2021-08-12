@@ -32,6 +32,10 @@
 ## Model 2
 [This is a Machine Learning Model for Trading Using Technical Analysis of Stock Market](https://github.com/anirbanghoshsbi/.github.io/blob/master/Random_forest_Modular_Correct(Daily_New).ipynb)
 
+
+## Model 3
+[This model uses Machine Learning using price and IndiaVix to find market trend](https://github.com/anirbanghoshsbi/.github.io/blob/master/Random_Forest_on_correlation_data.ipynb)
+
 # Misc Model For Anamoly Detection in Stock Price
 
 [This is the Deep Learning Model based on Autoencoders that can be used for detecting anamoly in Stock Market Prices](https://github.com/anirbanghoshsbi/.github.io/blob/master/Stock_Price_anomaly_detection_Using_Stupid_Deep_Learning.ipynb)
