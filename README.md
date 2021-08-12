@@ -34,7 +34,7 @@
 
 
 ## Model 3
-[This model uses Machine Learning using price and IndiaVix to find market trend](https://github.com/anirbanghoshsbi/.github.io/blob/master/Random_Forest_on_correlation_data.ipynb)
+[This model uses Machine Learning uses Price and IndiaVix to predict market trend](https://github.com/anirbanghoshsbi/.github.io/blob/master/Random_Forest_on_correlation_data.ipynb)
 
 # Misc Model For Anamoly Detection in Stock Price
 
