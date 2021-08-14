@@ -16,7 +16,9 @@
 
 # Model For Market Regime Detection 
 
-[This is the hidden Markov Model for Market Regime Detection](https://github.com/anirbanghoshsbi/.github.io/blob/master/Hidden_Markov_Model.ipynb)
+[This is the hidden Markov Model for Market Regime Detection using price volatility](https://github.com/anirbanghoshsbi/.github.io/blob/master/Hidden_Markov_Model.ipynb)
+
+[This is the hidden Markov Model for Market Regime Detection using IndiaVix](https://github.com/anirbanghoshsbi/.github.io/blob/master/Hidden_Markov_Model_on_indiavix.ipynb)
 
 # Model to Track Smart Money Movement in the Stock Market
 
