@@ -49,4 +49,4 @@
 
 # Notes 
 
-[Here I will add weekly notes on my trading decisions]()
+[Here I will add weekly notes on my trading decisions](https://github.com/anirbanghoshsbi/.github.io/blob/master/Notes/)
