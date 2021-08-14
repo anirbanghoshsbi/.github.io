@@ -46,3 +46,7 @@
 
 # Momentum Investing : Quant Strategy
 [Stocks Showing Momentum](https://github.com/anirbanghoshsbi/.github.io/blob/master/Momentum_Strategy.ipynb)
+
+# Notes 
+
+[Here I will add weekly notes on my trading decisions]
