@@ -38,3 +38,5 @@ Breadth of the Market
    
 Chart Analysis
    1. Renko Chart of Nifty based on dual indicator time frame
+   ![image](https://user-images.githubusercontent.com/40670707/129467385-c17eaad5-3d3e-4ddc-be3d-cc7283d63e6a.png)
+   It is a Buy.
