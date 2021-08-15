@@ -1,6 +1,6 @@
 # Smart Money :
   1. FII (minus DII) action on a daily basis
-      FII are net buyers this week
+      [FII are net buyers this week]
   ![image](https://user-images.githubusercontent.com/40670707/129466922-11296d90-16bf-4645-8cbd-93cc89fbd3af.png)
 
   2. FII action on monthly , weekly and sectoral basis
@@ -10,25 +10,25 @@
     ![image](https://user-images.githubusercontent.com/40670707/129466996-94930b13-89fd-4a13-ace5-52942be63d06.png)
 
 # Machine Learning Models
-   1. on price action 
+   1. On Price Action 
    Based on the price action The Machine Learning Model is suggesting a buy
    ![image](https://user-images.githubusercontent.com/40670707/129467113-d75e52ed-aed8-4106-bed5-30f729681c87.png)
 
-   2. on market breadth
+   2. On Market Breadth
    Based on market breadth the The Machine Learning Model is predicting a buy
    ![image](https://user-images.githubusercontent.com/40670707/129467043-fd22cd57-24a2-49bb-8ce9-d6dd9e499224.png)
 
-   3. on volatility
+   3. On Volatility
    Yeah , Buy it.
    ![image](https://user-images.githubusercontent.com/40670707/129467188-b31d489d-021d-4e09-b647-e5f781d24aff.png)
 
 
 # Hidden  Markov Models
-   1. On price volatility  
+   1. On Price Volatility  
    Regime is supportive of an up move
    ![image](https://user-images.githubusercontent.com/40670707/129467310-b51ae7ba-e85d-4731-a150-92a077ca08a3.png)
 
-   2. On IndiaVIX volatility
+   2. On IndiaVIX Volatility
    Regime is supportive of an upmove
    ![image](https://user-images.githubusercontent.com/40670707/129467318-655947b8-6d45-4b2c-858c-328ef2ab36ed.png)
 
