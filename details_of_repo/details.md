@@ -10,4 +10,10 @@
 
 [Github  repo for tutorials on time series](https://github.com/anirbanghoshsbi/Tutorials)
 
+[Github repo for udacity ai 4 trading ](https://github.com/anirbanghoshsbi/ai-for-trading)
 
+[python exercise repo](https://github.com/anirbanghoshsbi/ai-for-trading)
+
+[pandas 100 exercises](https://github.com/anirbanghoshsbi/100-pandas-puzzles)
+
+[numpy 100 exercises](https://github.com/anirbanghoshsbi/numpy-100)
