@@ -1,6 +1,7 @@
 # Smart Money :
   1. FII (minus DII) action on a daily basis
-      [FII are net buyers this week]
+      
+      ***FII are net buyers this week***
   ![image](https://user-images.githubusercontent.com/40670707/129466922-11296d90-16bf-4645-8cbd-93cc89fbd3af.png)
 
   2. FII action on monthly , weekly and sectoral basis
@@ -25,11 +26,11 @@
 
 # Hidden  Markov Models
    1. On Price Volatility  
-   Regime is supportive of an up move
+   ***Regime is supportive of an up move***
    ![image](https://user-images.githubusercontent.com/40670707/129467310-b51ae7ba-e85d-4731-a150-92a077ca08a3.png)
 
    2. On IndiaVIX Volatility
-   Regime is supportive of an upmove
+   ***Regime is supportive of an upmove***
    ![image](https://user-images.githubusercontent.com/40670707/129467318-655947b8-6d45-4b2c-858c-328ef2ab36ed.png)
 
 # Breadth of the Market
