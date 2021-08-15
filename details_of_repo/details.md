@@ -17,3 +17,10 @@
 [pandas 100 exercises](https://github.com/anirbanghoshsbi/100-pandas-puzzles)
 
 [numpy 100 exercises](https://github.com/anirbanghoshsbi/numpy-100)
+
+[Data Science take home problems](https://github.com/anirbanghoshsbi/DS-Take-Home)
+
+[Network Analysis for Finance](https://github.com/anirbanghoshsbi/netsci-project)
+
+[Deep Learning Book Notes](https://github.com/anirbanghoshsbi/deepLearningBook-Notes)
+
