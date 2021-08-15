@@ -24,3 +24,4 @@
 
 [Deep Learning Book Notes](https://github.com/anirbanghoshsbi/deepLearningBook-Notes)
 
+[Data Science Exercises](https://github.com/anirbanghoshsbi/solutions)
