@@ -1,6 +1,6 @@
 # These are the breadth indicators of Nifty
 
-[This is the Advance Decline Indicator of Nifty 100 Index ](https://github.com/anirbanghoshsbi/.github.io/blob/master/Advance_Decline_Nifty100B.ipynb)
+[This is the Advance Decline Indicator of Nifty 100 Index  Along with Mc-clellan Summation Index for intermediate to long term trend](https://github.com/anirbanghoshsbi/.github.io/blob/master/Advance_Decline_Nifty100B.ipynb)
 
 [This is the Above 50 DMA Indicator of Nifty 100 Index ](https://github.com/anirbanghoshsbi/.github.io/blob/master/nifty100_Above_50EMA_B.ipynb)
 
