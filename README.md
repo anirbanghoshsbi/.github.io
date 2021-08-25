@@ -53,7 +53,7 @@
 
 # Weekly Analysis (TO DO)
 
-[Nifty vs Crude Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/Scaling_for_correlation.ipynb)
+[Nifty vs Crude Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_Crude.ipynb)
 
 [Nifty vs MMI sentiment](https://github.com/anirbanghoshsbi/.github.io/blob/master/MMI.ipynb)
 
