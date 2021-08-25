@@ -55,6 +55,12 @@
 
 [Nifty vs Crude Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_Crude.ipynb)
 
+[Nifty vs Gold Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_gold.ipynb)
+
+[Nifty vs Copper Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_Copper.ipynb)
+
+
+
 [Nifty vs MMI sentiment](https://github.com/anirbanghoshsbi/.github.io/blob/master/MMI.ipynb)
 
 [Nifty vs Vix HMM analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/Hidden_Markov_Model_on_indiavix.ipynb)
