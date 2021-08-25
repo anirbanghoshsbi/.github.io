@@ -58,3 +58,8 @@
 [Nifty vs MMI sentiment](www.google.com)
 
 [Nifty vs Vix HMM analysis](www.google.com)
+
+
+## pending work
+
+1. isolation forest for anamoly detection in stock market
