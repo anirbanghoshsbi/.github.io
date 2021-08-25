@@ -59,7 +59,7 @@
 
 [Nifty vs Copper Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_Copper.ipynb)
 
-
+[Nifty vs IndiaVix](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_indiavix.ipynb)
 
 [Nifty vs MMI sentiment](https://github.com/anirbanghoshsbi/.github.io/blob/master/MMI.ipynb)
 
