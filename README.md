@@ -53,11 +53,11 @@
 
 # Weekly Analysis (TO DO)
 
-[Nifty vs Crude Correlation](www.google.com)
+[Nifty vs Crude Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/Scaling_for_correlation.ipynb)
 
-[Nifty vs MMI sentiment](www.google.com)
+[Nifty vs MMI sentiment](https://github.com/anirbanghoshsbi/.github.io/blob/master/MMI.ipynb)
 
-[Nifty vs Vix HMM analysis](www.google.com)
+[Nifty vs Vix HMM analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/Hidden_Markov_Model_on_indiavix.ipynb)
 
 
 ## pending work
