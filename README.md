@@ -53,8 +53,8 @@
 
 # Weekly Analysis
 
-[Nifty vs Crude Correlation]
+[Nifty vs Crude Correlation](www.google.com)
 
-[Nifty vs MMI sentiment]
+[Nifty vs MMI sentiment](www.google.com)
 
-[Nifty vs Vix HMM analysis]
+[Nifty vs Vix HMM analysis](www.google.com)
