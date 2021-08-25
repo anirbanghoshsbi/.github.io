@@ -51,7 +51,7 @@
 
 [Here I will add weekly notes on my trading decisions](https://github.com/anirbanghoshsbi/.github.io/blob/master/Notes/)
 
-# Weekly Analysis
+# Weekly Analysis (TO DO)
 
 [Nifty vs Crude Correlation](www.google.com)
 
