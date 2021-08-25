@@ -50,3 +50,11 @@
 # Notes 
 
 [Here I will add weekly notes on my trading decisions](https://github.com/anirbanghoshsbi/.github.io/blob/master/Notes/)
+
+# Weekly Analysis
+
+[Nifty vs Crude Correlation]
+
+[Nifty vs MMI sentiment]
+
+[Nifty vs Vix HMM analysis]
