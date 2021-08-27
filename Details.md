@@ -1,5 +1,5 @@
 # Correlation Folder
-1. Important file : Correlation between Nifty and 10 year Interest Rate.
+1. Important file : Correlation between Nifty and 10 year Interest Rate.(https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_IN10_interest.ipynb)
 2. Important file : Correlation between Nifty and SmallCap.
 3. Important file : Correlation between Nifty and Gold.
 
