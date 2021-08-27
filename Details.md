@@ -10,9 +10,9 @@
 My Strategy of Analysis
 
 
-|    Sl.No.    |  Details    |
--------------------------------------------
-|    1     |   Money Flow : FII and DII   |
+|Sl.No.|Details|
+-----------------
+|1|Money Flow : FII and DII|
 
 |   2     | Correlation : NIfty vs SmallCap|
    
