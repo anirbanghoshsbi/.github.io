@@ -68,4 +68,4 @@
 
 ## pending work
 
-1. isolation forest for anamoly detection in stock market
+1. isolation forest for anamoly detection in stock market 🖍️
