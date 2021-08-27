@@ -22,7 +22,7 @@
 
 # Model to Track Smart Money Movement in the Stock Market
 
-[This model shows whether the  smart money is moving in or out of Indian Market](https://github.com/anirbanghoshsbi/.github.io/blob/master/GET_FII_Data.ipynb)
+[This model shows whether the  smart money is moving in or out of Indian Market](https://github.com/anirbanghoshsbi/.github.io/blob/master/GET_FII_Data.ipynb) :joy:
 
 [FII Yearly , Monthly , Sector wise investment details](https://github.com/anirbanghoshsbi/.github.io/blob/master/FII_yearly_investment.ipynb)
 
