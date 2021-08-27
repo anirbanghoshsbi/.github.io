@@ -1,7 +1,7 @@
 # Correlation Folder
-1. Important file : Correlation between Nifty and 10 year Interest Rate.(https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_IN10_interest.ipynb)
-2. Important file : Correlation between Nifty and SmallCap.
-3. Important file : Correlation between Nifty and Gold.
+1. [Important file : Correlation between Nifty and 10 year Interest Rate.](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_IN10_interest.ipynb)
+2. [Important file : Correlation between Nifty and SmallCap.](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/SmallCap_Nifty_Corr.ipynb)
+3. [Important file : Correlation between Nifty and Gold.](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_gold.ipynb)
 
 ## Remember : 
 1. I *donot want* spread between highly correlated (positively) assets to move to the extreme as it *pronounce* the trend is ending.
