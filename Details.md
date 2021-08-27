@@ -7,3 +7,17 @@
 1. I *donot want* spread between highly correlated (positively) assets to move to the extreme as it *pronounce* the trend is ending.
 2. Also in case of <ins> *negatively correlated* </ins> assets I want the spread to be in the *negative territory* before buying stocks.
 
+My Strategy of Analysis
+
+----------------
+|    Sl.No.    |  Details    |
+----------------
+|    1     |   Money Flow : FII and DII   |
+-----------------
+|   2     | Correlation : NIfty vs SmallCap|
+                          Nifty vs 10yrInt
+--------------------------------------------   
+|  3  | Market Breadth analysis |
+---------------------------------
+|  4  | Machine Learning |
+----------------------------
