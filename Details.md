@@ -20,3 +20,8 @@ My Strategy of Analysis
 
 |  4  | Machine Learning |
 
+
+| Sl.No.      | Details |
+| ----------- | ----------- |
+| Header      | Title       |
+| Paragraph   | Text        |
