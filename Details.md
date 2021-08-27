@@ -10,11 +10,11 @@
 My Strategy of Analysis
 
 
-|Sl.No.|Name of Analysis| Details|
-|:------ |:-------:|--------:
-|1|Money Flow : FII and DII|  |
-|2| Correlation : NIfty vs SmallCap| |
-|  3  | Market Breadth analysis | |
-|  4  | Machine Learning | |
+|Sl.No.|Name of Analysis| Details| Checkbox|
+|:------ |:-------:|--------:| ------ |
+|1|Money Flow : FII and DII|  | [x] |
+|2| Correlation : NIfty vs SmallCap| |[x] |
+|  3  | Market Breadth analysis | | [x] |
+|  4  | Machine Learning | | [x]|
 
 
