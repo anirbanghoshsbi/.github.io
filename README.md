@@ -63,7 +63,7 @@
 
 ~~[Nifty vs MMI sentiment](https://github.com/anirbanghoshsbi/.github.io/blob/master/MMI.ipynb)~~
 
-~~[Nifty vs Vix HMM analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/Hidden_Markov_Model_on_indiavix.ipynb)~~
+~~[IndiaVix HMM analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/Hidden_Markov_Model_on_indiavix.ipynb)~~
 
 
 ## pending work
