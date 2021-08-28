@@ -17,4 +17,4 @@ My Strategy of Analysis
 |  3  | Market Breadth analysis | |  |
 |  4  | Machine Learning | | |
 
-
+📔 In option trading deploy `third`of your capital in a idea keep the rest `two third` for fire-fighting.
