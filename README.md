@@ -61,7 +61,7 @@
 
 ~~[Nifty vs IndiaVix Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_VIX.ipynb)~~
 
-[Nifty vs MMI sentiment](https://github.com/anirbanghoshsbi/.github.io/blob/master/MMI.ipynb)
+~~[Nifty vs MMI sentiment](https://github.com/anirbanghoshsbi/.github.io/blob/master/MMI.ipynb)
 
 [Nifty vs Vix HMM analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/Hidden_Markov_Model_on_indiavix.ipynb)
 
