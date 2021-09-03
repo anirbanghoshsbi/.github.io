@@ -6,6 +6,8 @@
 
 [This is the Above 50 DMA Indicator of Nifty FNO Index ](https://github.com/anirbanghoshsbi/.github.io/blob/master/FNO_Above_50_DMA_B.ipynb)
 
+#  Nifty Price To Earnings Ratio
+[Nifty pe ratio](https://nifty-pe-ratio.com/)
 
 # These are the breadth indicators of BSE
 
