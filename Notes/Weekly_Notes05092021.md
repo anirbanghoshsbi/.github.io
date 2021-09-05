@@ -32,12 +32,17 @@
    3. On Volatility
    Yeah , Buy it.
   ![image](https://user-images.githubusercontent.com/40670707/132112563-8225957a-f713-40ec-ae29-0534cc3b407d.png)
-------------------------------------------------------------------------------------------------------------------------
-# Hidden  Markov Models
+
+ # Hidden  Markov Models
    1. On Price Volatility  
    ***Regime is supportive of an up move***
-   ![image](https://user-images.githubusercontent.com/40670707/129467310-b51ae7ba-e85d-4731-a150-92a077ca08a3.png)
+   
+  
+   ![image](https://user-images.githubusercontent.com/40670707/132112634-d5f13de5-033d-4a3c-90e2-5874a666e35c.png)
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 
+# Hidden  Markov Models
    2. On IndiaVIX Volatility
    ***Regime is supportive of an upmove***
    ![image](https://user-images.githubusercontent.com/40670707/129467318-655947b8-6d45-4b2c-858c-328ef2ab36ed.png)
