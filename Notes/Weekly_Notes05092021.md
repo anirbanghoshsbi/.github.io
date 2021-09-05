@@ -6,27 +6,33 @@
 
       ***FII minus DII this week***
   ![image](https://user-images.githubusercontent.com/40670707/132112146-75a3237a-2ed1-4988-b102-1f47b9ae3656.png)
-    
+  
+     ***Calls and Puts***
+   ![image](https://user-images.githubusercontent.com/40670707/132112169-4da7f8e2-5c73-4ef1-901f-ba2f09053f81.png)
+  
+  
+  In the last few days there has been writing in both calls and puts.
+  
+  
   2. FII action on monthly , weekly and sectoral basis
     On a monthly basis FIIs are still buyers
-    ![image](https://user-images.githubusercontent.com/40670707/129466967-f5344f54-17d9-4b1e-ae11-213a6b610d79.png)
+    ![image](https://user-images.githubusercontent.com/40670707/132112215-bc05a1f2-1507-4b7c-b14b-f8e5107b440f.png)
     On a yearly basis FII are buyers
     ![image](https://user-images.githubusercontent.com/40670707/129466996-94930b13-89fd-4a13-ace5-52942be63d06.png)
 
 # Machine Learning Models
    1. On Price Action 
    Based on the price action The Machine Learning Model is suggesting a buy
-   ![image](https://user-images.githubusercontent.com/40670707/129467113-d75e52ed-aed8-4106-bed5-30f729681c87.png)
+  ![image](https://user-images.githubusercontent.com/40670707/132112503-acaf304b-27c2-4482-b179-46db12f9c839.png)
 
    2. On Market Breadth
    Based on market breadth the The Machine Learning Model is predicting a buy
-   ![image](https://user-images.githubusercontent.com/40670707/129467043-fd22cd57-24a2-49bb-8ce9-d6dd9e499224.png)
+   ![image](https://user-images.githubusercontent.com/40670707/132112465-a7c34bee-49c6-4548-81b2-fbd9a518a804.png)
 
    3. On Volatility
    Yeah , Buy it.
-   ![image](https://user-images.githubusercontent.com/40670707/129467188-b31d489d-021d-4e09-b647-e5f781d24aff.png)
-
-
+  ![image](https://user-images.githubusercontent.com/40670707/132112563-8225957a-f713-40ec-ae29-0534cc3b407d.png)
+------------------------------------------------------------------------------------------------------------------------
 # Hidden  Markov Models
    1. On Price Volatility  
    ***Regime is supportive of an up move***
