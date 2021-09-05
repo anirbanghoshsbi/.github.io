@@ -2,6 +2,7 @@
 
 ### Python pandas: remove everything after a delimiter in a string
 df['text_new'] = df['text'].str.split('::').str[0]
+
 df['text_new1'] = [x.split('::')[0] for x in df['text']]
 
 ### Subset Time Series By Dates Python Using Pandas
