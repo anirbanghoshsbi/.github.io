@@ -55,7 +55,7 @@
 
 # Weekly Analysis (TO DO)
 
-[Nifty Vs 10yr-Interest Rate Correlation Analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/Correlation_IN10_interest.ipynb)
+[Nifty Vs 10yr-Interest Rate Correlation Analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_IN10_interest.ipynb)
 
 [Nifty vs Crude Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_Crude.ipynb)
 
