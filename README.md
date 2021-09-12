@@ -67,6 +67,8 @@
 
 [Nifty vs MMI Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Corr_Nifty_vs_MMI.ipynb)
 
+[Nifty vs EEM Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Corr_Nifty_vs_eem.ipynb)
+
 [IndiaVix HMM analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/Hidden_Markov_Model_on_indiavix.ipynb)
 
 
