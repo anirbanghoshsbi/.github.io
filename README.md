@@ -28,7 +28,7 @@
 
 [FII Yearly , Monthly , Sector wise investment details](https://github.com/anirbanghoshsbi/.github.io/blob/master/FII_yearly_investment.ipynb)
 
-# Machine Learning Model
+# Machine Learning Model 🧠
 
 ## Model 1
 [This is a Machine Learning Model for Trading Using Breadth of Stock Market](https://github.com/anirbanghoshsbi/.github.io/blob/master/Combined_Above_i%7BDMA%7D_RandomForest.ipynb)
