@@ -16,7 +16,7 @@
 
 [This is the Above 50 DMA Indicator of Large , Mid , Small Cap Sector BSE](https://github.com/anirbanghoshsbi/.github.io/blob/master/BSE_above_50DMA_large_mid_small_B.ipynb)
 
-# Model For Market Regime Detection 
+# Model For Market Regime Detection 🌩️
 
 [This is the hidden Markov Model for Market Regime Detection using price volatility](https://github.com/anirbanghoshsbi/.github.io/blob/master/Hidden_Markov_Model.ipynb)
 
