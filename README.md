@@ -41,6 +41,10 @@
 ## Model 3
 [This model uses Machine Learning uses Price and IndiaVix to predict market trend](https://github.com/anirbanghoshsbi/.github.io/blob/master/Random_Forest_on_correlation_data.ipynb)
 
+## Model for MCX
+[This Model is to be used for mcx futures](https://github.com/anirbanghoshsbi/.github.io/blob/master/Random_forest_Modular_Daily_For_MCX_Futures.ipynb)
+
+
 # Misc Model For Anamoly Detection in Stock Price
 
 [This is the Deep Learning Model based on Autoencoders that can be used for detecting anamoly in Stock Market Prices](https://github.com/anirbanghoshsbi/.github.io/blob/master/Stock_Price_anomaly_detection_Using_Stupid_Deep_Learning.ipynb)
