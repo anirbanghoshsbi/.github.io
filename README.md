@@ -31,18 +31,18 @@
 # Machine Learning Model 🧠
 
 ## Model 1
-[This is a Machine Learning Model for Trading Using Breadth of Stock Market](https://github.com/anirbanghoshsbi/.github.io/blob/master/Combined_Above_i%7BDMA%7D_RandomForest.ipynb)
+[This is a Machine Learning Model for Trading Using Breadth of Stock Market](https://github.com/anirbanghoshsbi/.github.io/blob/master/machine_learning/Combined_Above_i%7BDMA%7D_RandomForest.ipynb)
 
 
 ## Model 2
-[This is a Machine Learning Model for Trading Using Technical Analysis of Stock Market](https://github.com/anirbanghoshsbi/.github.io/blob/master/Random_forest_Modular_Correct(Daily_New).ipynb)
+[This is a Machine Learning Model for Trading Using Technical Analysis of Stock Market](https://github.com/anirbanghoshsbi/.github.io/blob/master/machine_learning/Random_forest_Modular_Correct(Daily_New).ipynb)
 
 
 ## Model 3
-[This model uses Machine Learning uses Price and IndiaVix to predict market trend](https://github.com/anirbanghoshsbi/.github.io/blob/master/Random_Forest_on_correlation_data.ipynb)
+[This model uses Machine Learning uses Price and IndiaVix to predict market trend](https://github.com/anirbanghoshsbi/.github.io/blob/master/machine_learning/Random_Forest_on_correlation_data.ipynb)
 
 ## Model for MCX
-[This Model is to be used for mcx futures](https://github.com/anirbanghoshsbi/.github.io/blob/master/Random_forest_Modular_Daily_For_MCX_Futures.ipynb)
+[This Model is to be used for mcx futures](https://github.com/anirbanghoshsbi/.github.io/blob/master/machine_learning/Random_forest_Modular_Daily_For_MCX_Futures.ipynb)
 
 
 # Misc Model For Anamoly Detection in Stock Price
