@@ -39,7 +39,7 @@
 
 
 ## Model 3
-[This model uses Machine Learning uses Price and IndiaVix to predict market trend](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Random_forest_Modular_Daily_For_indiavix.ipynb)
+[This model uses Machine Learning uses Price and IndiaVix to predict market trend](https://github.com/anirbanghoshsbi/.github.io/blob/master/machine_learning/Random_forest_Modular_Daily_For_indiavix.ipynb)
 
 ## Model for MCX
 [This Model is to be used for mcx futures](https://github.com/anirbanghoshsbi/.github.io/blob/master/machine_learning/Random_forest_Modular_Daily_For_MCX_Futures.ipynb)
