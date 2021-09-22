@@ -18,3 +18,30 @@ My Strategy of Analysis
 |  4  | Machine Learning | | |
 
 📔 In option trading deploy `third`of your capital in a idea keep the rest `two third` for fire-fighting 🔥.
+
+Data :
+Price Data :
+Model 1. Based on TA
+Model 2. Based on Market Breadth
+
+IndiaVix:
+Model 1. Based on IndiaVix
+
+Funds Flow :
+Model 1. Based on Money Flow
+
+Sentiment Data :
+Model 1 Based on Sentiment Data (optional)
+
+All Models above are classifiers.
+
+HMM Models :
+
+1. NIfty HMM
+2. Indiavix HMM
+
+Combined Model :
+
+Average the prediction of each model given equal weights.
+Now if the score is more than 50% and above of total score go long.
+If the score is less than 50% go short (if price below 50 ema) or stay in cash.
