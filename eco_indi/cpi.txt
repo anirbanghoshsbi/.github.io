@@ -1,8 +1,4 @@
-Release Date
-Time
-Actual
-Forecast
-Previous
+Release Date  Time  Actual  Forecast  Previous
 Oct 12, 2021 (Sep)	17:30	-	5.60%	
 5.30%
 Sep 13, 2021 (Aug)	17:30	5.30%	5.60%	
