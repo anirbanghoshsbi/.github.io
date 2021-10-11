@@ -13,5 +13,6 @@ LIX 15 Stocks:
 |Tech Mahindra Ltd.| techm.ns|
 |Hero MotoCorp Ltd. |HEROMOTOCO.NS|
 |Adani Ports and Special Economic Zone Ltd.| adaniports.ns|
-|Yes Bank Ltd.| yesbank.ns|
+|Reliance Inds.|reliance.ns|
 |Bharat Petroleum Corporation Ltd.| bpcl.ns|
+|Tata Steel Ltd.|tatasteel.ns|
