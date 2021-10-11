@@ -6,10 +6,7 @@ LIX 15 Stocks:
 |Name |Symbol|
 |----------------|------------|
 |Axis Bank Ltd. | axisbank.ns|
-
 |State Bank of India | sbin.ns|
-
-
 |Tata Motors Ltd.| tatamotors.ns|
 |HCL Technologies Ltd. |hcltech.ns|
 |Lupin Ltd.| lupin.ns|
