@@ -44,6 +44,9 @@
 ## Model for MCX
 [This Model is to be used for mcx futures](https://github.com/anirbanghoshsbi/.github.io/blob/master/machine_learning/Random_forest_Modular_Daily_For_MCX_Futures.ipynb)
 
+# Signals plot
+[plot the Composite signals](https://github.com/anirbanghoshsbi/.github.io/blob/master/Signals_plot.ipynb)
+
 
 # Misc Model For Anamoly Detection in Stock Price
 
