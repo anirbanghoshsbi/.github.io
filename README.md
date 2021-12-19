@@ -28,6 +28,9 @@
 
 [FII Yearly , Monthly , Sector wise investment details](https://github.com/anirbanghoshsbi/.github.io/blob/master/FII_yearly_investment.ipynb)
 
+# Sentiment Model 😕
+[Sentiment Model](https://github.com/anirbanghoshsbi/.github.io/blob/master/MII.ipynb)
+
 # Machine Learning Model 🧠
 
 ## Model 1
