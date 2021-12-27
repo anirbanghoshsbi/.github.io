@@ -8,3 +8,5 @@ Trading Nifty in by going Short : is always OTM (5%) puts of next/far month. { t
 
 Asset Allocation : 90% . Speculative trading : 10%.
 !(https://github.com/anirbanghoshsbi/data/blob/main/asset%20allocation.jpg)
+
+![This is an image](https://myoctocat.com/assets/images/base-octocat.svg)
