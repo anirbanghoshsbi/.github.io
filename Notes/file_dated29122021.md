@@ -45,3 +45,4 @@ for i in range(len(X)):
 for i in range(len(minmax)):
     plt.hlines(minmax[i][0],xmin = 0,xmax = len(X),colors = 'g')
     plt.hlines(minmax[i][1],xmin = 0,xmax = len(X),colors = 'r')        
+![](https://towardsdatascience.com/using-k-means-clustering-to-create-support-and-resistance-b13fdeeba12)
