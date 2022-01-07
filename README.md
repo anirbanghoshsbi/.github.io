@@ -1,3 +1,14 @@
+# Base Decision on these
+
+Trade Decision Based on 
+| Name  | Value   | Site |
+|---|---|---|
+Nifty ML | 1/0 |[Here ➡️] (https://github.com/anirbanghoshsbi/.github.io/blob/master/Advance_Decline_Nifty100B.ipynb)|
+Nifty MMI | 1/0 |[Here ➡️](https://github.com/anirbanghoshsbi/.github.io/blob/master/MMI.ipynb)|
+Nifty Kalman Filter Signals |1/0 |[Here ➡️] (https://github.com/anirbanghoshsbi/.github.io/blob/master/MMI.ipynb)|
+Nifty Technical Analysis | 1/0 |[Here ➡️] (https://github.com/anirbanghoshsbi/.github.io/blob/master/MMI.ipynb)||
+
+
 # These are the breadth indicators of Nifty
 
 [This is the Advance Decline Indicator of Nifty 100 Index  Along with Mc-clellan Summation Index for intermediate to long term trend](https://github.com/anirbanghoshsbi/.github.io/blob/master/Advance_Decline_Nifty100B.ipynb)
