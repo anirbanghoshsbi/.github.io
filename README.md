@@ -3,7 +3,7 @@
 Trade Decision Based on 
 | Name  | Value   | Site |
 |---|---|---|
-Nifty ML | 1/0 |[Here ➡️](https://github.com/anirbanghoshsbi/.github.io/blob/master/machine_learning/Random_forest_Modular_Correct(Daily_New).ipynb), and [Here ➡️](https://github.com/anirbanghoshsbi/.github.io/blob/master/machine_learning/Stacking_classification_with_trend_following.ipynb)|
+Nifty ML | 1/0 |[Here ➡️](https://github.com/anirbanghoshsbi/.github.io/blob/master/machine_learning/Random_forest_Modular_Correct(Daily_New).ipynb), and [Here ➡️](https://github.com/anirbanghoshsbi/.github.io/blob/master/machine_learning/Stacking_classification_with_trend_following_class_labels(Working).ipynb)|
 Nifty MMI | 1/0 |[Here ➡️](https://github.com/anirbanghoshsbi/.github.io/blob/master/MMI.ipynb)|
 Nifty Kalman Filter Signals |1/0 |[Here ➡️](https://github.com/anirbanghoshsbi/.github.io/blob/master/kalman/Kalman_Filters_for_Nifty_ema.ipynb)|
 Nifty Technical Analysis | 1/0 |[Here ➡️](https://github.com/anirbanghoshsbi/.github.io/blob/master/technical%20indicators/technical_indicators.ipynb)|
