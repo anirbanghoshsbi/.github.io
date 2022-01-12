@@ -79,15 +79,7 @@ Cluster Analysis | -- | [Here ➡️](https://github.com/anirbanghoshsbi/.github
 
 [Nifty Vs 10yr-Interest Rate Correlation Analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_IN10_interest.ipynb)
 
-[Nifty vs Crude Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_Crude.ipynb)
-
 [Nifty vs Gold Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_gold.ipynb)
-
-[Nifty vs Copper Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_Copper.ipynb)
-
-[Nifty vs IndiaVix Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_VIX.ipynb)
-
-[Nifty vs MMI Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Corr_Nifty_vs_MMI.ipynb)
 
 [Nifty vs EEM Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Nifty_Corr_EEM(etf).ipynb)
 
