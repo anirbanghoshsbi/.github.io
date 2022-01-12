@@ -9,6 +9,15 @@ Nifty Kalman Filter Signals |1/0 |[Here ➡️](https://github.com/anirbanghoshs
 Nifty Technical Analysis | 1/0 |[Here ➡️](https://github.com/anirbanghoshsbi/.github.io/blob/master/technical%20indicators/technical_indicators.ipynb)|
 Cluster Analysis | -- | [Here ➡️](https://github.com/anirbanghoshsbi/.github.io/tree/master/unsupervised_learning)|
 
+# Weekly Analysis (TO DO)
+
+[Nifty Vs 10yr-Interest Rate Correlation Analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_IN10_interest.ipynb)
+
+[Nifty vs Gold Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_gold.ipynb)
+
+[Nifty vs EEM Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Nifty_Corr_EEM(etf).ipynb)
+
+[IndiaVix HMM analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/Hidden_Markov_Model_on_indiavix.ipynb)
 
 # These are the breadth indicators of Nifty
 
@@ -75,15 +84,6 @@ Cluster Analysis | -- | [Here ➡️](https://github.com/anirbanghoshsbi/.github
 
 [Here I will add weekly notes on my trading decisions](https://github.com/anirbanghoshsbi/.github.io/blob/master/Notes/)
 
-# Weekly Analysis (TO DO)
-
-[Nifty Vs 10yr-Interest Rate Correlation Analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_IN10_interest.ipynb)
-
-[Nifty vs Gold Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_gold.ipynb)
-
-[Nifty vs EEM Correlation](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Nifty_Corr_EEM(etf).ipynb)
-
-[IndiaVix HMM analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/Hidden_Markov_Model_on_indiavix.ipynb)
 
 
 ## pending work
