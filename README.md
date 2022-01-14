@@ -9,7 +9,7 @@ Nifty Kalman Filter Signals |1/0 |[Here ➡️](https://github.com/anirbanghoshs
 Nifty Technical Analysis | 1/0 |[Here ➡️](https://github.com/anirbanghoshsbi/.github.io/blob/master/technical%20indicators/technical_indicators.ipynb)|
 Cluster Analysis | -- | [Here ➡️](https://github.com/anirbanghoshsbi/.github.io/tree/master/unsupervised_learning)|
 
-# Weekly Analysis (TO DO) [***Long term ***]
+# Weekly Analysis (TO DO) ***Long term***
 
 [Nifty Vs 10yr-Interest Rate Correlation Analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_IN10_interest.ipynb)
 
