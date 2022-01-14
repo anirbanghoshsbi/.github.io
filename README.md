@@ -1,6 +1,6 @@
 # Base Decision on these
 
-Trade Decision Based on 
+***Short Term*** Trade Decision Based on 
 | Name  | Value   | Site |
 |---|---|---|
 Nifty ML | 1/0 |[Here ➡️](https://github.com/anirbanghoshsbi/.github.io/blob/master/machine_learning/Random_forest_Modular_Correct(Daily_New).ipynb), and [Here ➡️](https://github.com/anirbanghoshsbi/.github.io/blob/master/machine_learning/Stacking_classification_with_trend_following_class_labels(Working).ipynb)|
@@ -9,7 +9,7 @@ Nifty Kalman Filter Signals |1/0 |[Here ➡️](https://github.com/anirbanghoshs
 Nifty Technical Analysis | 1/0 |[Here ➡️](https://github.com/anirbanghoshsbi/.github.io/blob/master/technical%20indicators/technical_indicators.ipynb)|
 Cluster Analysis | -- | [Here ➡️](https://github.com/anirbanghoshsbi/.github.io/tree/master/unsupervised_learning)|
 
-# Weekly Analysis (TO DO)
+# Weekly Analysis (TO DO) [***Long term ***]
 
 [Nifty Vs 10yr-Interest Rate Correlation Analysis](https://github.com/anirbanghoshsbi/.github.io/blob/master/correlation/folder/Correlation_IN10_interest.ipynb)
 
