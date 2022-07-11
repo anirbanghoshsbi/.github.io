@@ -1,0 +1,9 @@
+economy trend :
+
+1. nifty -usd
+2. nifty -gold
+3. nifty -crude
+
+above zero : strong economy / below zero weak economy.
+
+above moving average buy , below moving average sell.
