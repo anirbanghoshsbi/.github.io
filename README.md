@@ -79,7 +79,7 @@ Cluster Analysis | -- | [Here ➡️](https://github.com/anirbanghoshsbi/.github
 
 # Momentum Investing : Quant Strategy
 [Stocks Showing Momentum](https://github.com/anirbanghoshsbi/.github.io/blob/master/Momentum_Strategy.ipynb)
-
+[2](https://github.com/anirbanghoshsbi/github.io-algorithmic-trading-python)
 # Notes 
 
 [Here I will add weekly notes on my trading decisions](https://github.com/anirbanghoshsbi/.github.io/blob/master/Notes/)
