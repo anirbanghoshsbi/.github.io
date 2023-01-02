@@ -1,0 +1,1591 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.5.2"
+    },
+    "colab": {
+      "name": "Stacking_classification_with_trend_following_class_labels(Working).ipynb",
+      "provenance": [],
+      "include_colab_link": true
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/anirbanghoshsbi/.github.io/blob/master/work/work_from_here/work_in_progress\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "WIajvq6OJM1z"
+      },
+      "source": [
+        "# Classification (with class labels)\n",
+        "***"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "wUkOmuBmJM11"
+      },
+      "source": [
+        "# Import"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "-RM9iOgaK4eJ"
+      },
+      "source": [
+        "!pip install vecstack==0.4.0 -q\n",
+        "!pip install yfinance --upgrade --no-cache-dir -q\n",
+        "#!pip install -U scikit-learn==1.0"
+      ],
+      "execution_count": 280,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "qbz_VsWo8VFS"
+      },
+      "source": [
+        "!pip install pandas-ta -q\n",
+        "#==0.2.45b"
+      ],
+      "execution_count": 281,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def psar(barsdata, iaf = 0.02, maxaf = 0.2):\n",
+        "    length = len(barsdata)\n",
+        "    dates = list(barsdata['Date'])\n",
+        "    high = list(barsdata['High'])\n",
+        "    low = list(barsdata['Low'])\n",
+        "    close = list(barsdata['Close'])\n",
+        "    psar = close[0:len(close)]\n",
+        "    psarbull = [None] * length\n",
+        "    psarbear = [None] * length\n",
+        "    bull = True\n",
+        "    af = iaf\n",
+        "    ep = low[0]\n",
+        "    hp = high[0]\n",
+        "    lp = low[0]\n",
+        "    for i in range(2,length):\n",
+        "        if bull:\n",
+        "            psar[i] = psar[i - 1] + af * (hp - psar[i - 1])\n",
+        "        else:\n",
+        "            psar[i] = psar[i - 1] + af * (lp - psar[i - 1])\n",
+        "        reverse = False\n",
+        "        if bull:\n",
+        "            if low[i] < psar[i]:\n",
+        "                bull = False\n",
+        "                reverse = True\n",
+        "                psar[i] = hp\n",
+        "                lp = low[i]\n",
+        "                af = iaf\n",
+        "        else:\n",
+        "            if high[i] > psar[i]:\n",
+        "                bull = True\n",
+        "                reverse = True\n",
+        "                psar[i] = lp\n",
+        "                hp = high[i]\n",
+        "                af = iaf\n",
+        "        if not reverse:\n",
+        "            if bull:\n",
+        "                if high[i] > hp:\n",
+        "                    hp = high[i]\n",
+        "                    af = min(af + iaf, maxaf)\n",
+        "                if low[i - 1] < psar[i]:\n",
+        "                    psar[i] = low[i - 1]\n",
+        "                if low[i - 2] < psar[i]:\n",
+        "                    psar[i] = low[i - 2]\n",
+        "            else:\n",
+        "                if low[i] < lp:\n",
+        "                    lp = low[i]\n",
+        "                    af = min(af + iaf, maxaf)\n",
+        "                if high[i - 1] > psar[i]:\n",
+        "                    psar[i] = high[i - 1]\n",
+        "                if high[i - 2] > psar[i]:\n",
+        "                    psar[i] = high[i - 2]\n",
+        "        if bull:\n",
+        "            psarbull[i] = psar[i]\n",
+        "        else:\n",
+        "            psarbear[i] = psar[i]\n",
+        "    return pd.DataFrame({\"dates\":dates, \"high\":high, \"low\":low, \"close\":close, \"psar\":psar, \"psarbear\":psarbear, \"psarbull\":psarbull})\n"
+      ],
+      "metadata": {
+        "id": "AQ3D1ZxDgz79"
+      },
+      "execution_count": 282,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "x01lqyKZJM12"
+      },
+      "source": [
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.metrics import accuracy_score\n",
+        "from sklearn.ensemble import ExtraTreesClassifier\n",
+        "from sklearn.linear_model import LogisticRegression\n",
+        "from sklearn import svm\n",
+        "from sklearn.ensemble import RandomForestClassifier\n",
+        "from sklearn.neighbors import KNeighborsClassifier\n",
+        "from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA\n",
+        "from xgboost import XGBClassifier\n",
+        "from vecstack import stacking\n",
+        "import yfinance as yf\n",
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import pandas_ta as ta\n",
+        "from pandas_datareader import data as pdr\n",
+        "START = \"2019-11-01\"  #yyyy-mm-dd\n",
+        "END = '2022-06-01' #2022-05-13 #2022-05-02\n",
+        "START_testing='2022-05-26'"
+      ],
+      "execution_count": 283,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "A7HuA8O1iUhw"
+      },
+      "source": [
+        "trend_decider ='percentchange' #'percentchange' #'impulse' # 'sma'#'long' # percentchange\n",
+        "period=12\n",
+        "days_out=12\n",
+        "dictionary_bull={True:0.75, False:0.5}\n",
+        "dictionary_bear = {True:3,False:0.5}"
+      ],
+      "execution_count": 284,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "FXRFzAV_JM13"
+      },
+      "source": [
+        "# Prepare data"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "RaWMWy7RJN34",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "1b2b0633-4c92-4e00-fa35-57f77b64f98e"
+      },
+      "source": [
+        "tker = '^nsei' #'^nsei'\n",
+        "nifty =yf.download(tker,start=START,end=END)\n",
+        "#nifty=quandl.get('BSE/BOM500112',start_date=START,end_date=END,authtoken='1Mz3xLNFNdUpKENCkArB')\n",
+        "#nifty = pdr.get_data_yahoo(tker, start=START, end=END)\n",
+        "nifty=nifty.dropna()\n",
+        "nifty=nifty.iloc[:,:4]"
+      ],
+      "execution_count": 285,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\r[*********************100%***********************]  1 of 1 completed\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "uSCtRmwp6W9y",
+        "outputId": "0733a189-4fe1-49c4-87f3-668893373092"
+      },
+      "source": [
+        "nifty.columns"
+      ],
+      "execution_count": 286,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index(['Open', 'High', 'Low', 'Close'], dtype='object')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 286
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "dZvQgkrrJosR",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "e4f1fff8-1c52-43a8-e6cd-f95e791670ae"
+      },
+      "source": [
+        "# Calculate 30 Day Moving Average, Std Deviation, Upper Band and Lower Band\n",
+        "\n",
+        "nifty['30 Day MA'] = nifty['Close'].rolling(window=20).mean()\n",
+        "\n",
+        "# set .std(ddof=0) for population std instead of sample\n",
+        "nifty['30 Day STD'] = nifty['Close'].rolling(window=20).std() \n",
+        "nifty['Upper Band'] = nifty['30 Day MA'] + (nifty['30 Day STD'] *1.5)\n",
+        "nifty['Lower Band'] = nifty['30 Day MA'] - (nifty['30 Day STD'] *1.5)\n",
+        "nifty['ADV_26'] = nifty['Close'].rolling(window=26).mean()\n",
+        "nifty['ADV_13'] = nifty['Close'].rolling(window=10).mean()\n",
+        "nifty.ta.macd(append=True)\n",
+        "nifty.ta.vortex(length=18,append=True)\n",
+        "nifty.ta.aroon(length=18,append=True)\n",
+        "nifty.ta.rsi(length=18,append=True)\n",
+        "print()"
+      ],
+      "execution_count": 287,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "bygi3wS4J7Gs"
+      },
+      "source": [
+        "df_old = nifty.copy()\n",
+        "# I Just need the Close\n",
+        "price_data = df_old.copy()"
+      ],
+      "execution_count": 288,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "dbY9iB7-KxVq"
+      },
+      "source": [
+        "features = ['30 Day MA','30 Day STD','Upper Band','Lower Band','ADV_13','ADV_26','MACD_12_26_9',\\\n",
+        "       'MACDh_12_26_9', 'MACDs_12_26_9','VTXP_18', 'VTXM_18', 'AROOND_18', 'AROONU_18',\n",
+        "       'AROONOSC_18', 'RSI_18']"
+      ],
+      "execution_count": 289,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "gTuaR5hhDFjB",
+        "outputId": "2e9801d1-9988-4d44-eccc-d3627f81283c"
+      },
+      "source": [
+        "price_data.columns"
+      ],
+      "execution_count": 290,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index(['Open', 'High', 'Low', 'Close', '30 Day MA', '30 Day STD', 'Upper Band',\n",
+              "       'Lower Band', 'ADV_26', 'ADV_13', 'MACD_12_26_9', 'MACDh_12_26_9',\n",
+              "       'MACDs_12_26_9', 'VTXP_18', 'VTXM_18', 'AROOND_18', 'AROONU_18',\n",
+              "       'AROONOSC_18', 'RSI_18'],\n",
+              "      dtype='object')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 290
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "9ytJOVlCaqQF"
+      },
+      "source": [
+        "#####df = df.assign(flag=df['apm'].gt(df['apm'].shift()))"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "fiMreZ6BYX3l"
+      },
+      "source": [
+        "if trend_decider=='impulse':\n",
+        "  price_data=price_data.assign(Flag=(price_data['MACDh_12_26_9'].lt(price_data['MACDh_12_26_9'].shift()) & price_data['ADV_13'].lt(price_data['ADV_13'].shift())))\n",
+        "elif trend_decider=='sma':\n",
+        "  price_data= price_data.assign(Flag=price_data['ADV_50'].lt(price_data['ADV_50'].shift()))\n",
+        "elif trend_decider=='long':\n",
+        "  price_data= price_data.assign(Flag=price_data['ADV_50'].lt(price_data['ADV_50'].shift(period))) \n",
+        "elif trend_decider=='percentchange':\n",
+        "  close_groups = price_data['Close'].transform(lambda x : np.sign(x.diff(days_out)))\n",
+        "  price_data['Flag'] = close_groups  "
+      ],
+      "execution_count": 291,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ZTIVeogfokOU"
+      },
+      "source": [
+        "price_data=price_data.assign(Strength_Flag_dummy=(price_data['MACDh_12_26_9'].gt(price_data['MACDh_12_26_9'].shift()) & price_data['ADV_13'].gt(price_data['ADV_13'].shift())))"
+      ],
+      "execution_count": 292,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "price_data=price_data.assign(Strength_Flag_dum=(price_data['MACDh_12_26_9'].lt(price_data['MACDh_12_26_9'].shift()) & price_data['ADV_13'].lt(price_data['ADV_13'].shift())))"
+      ],
+      "metadata": {
+        "id": "tsxE9Mo5jM6G"
+      },
+      "execution_count": 293,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "C4XBkw9zQU-D"
+      },
+      "source": [
+        "price_data.dropna(inplace=True)"
+      ],
+      "execution_count": 294,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "price_data.Strength_Flag_dummy.value_counts()"
+      ],
+      "metadata": {
+        "id": "L2-mQ_g8UmuU",
+        "outputId": "3d7d2958-4552-4615-9af7-c04cc86e72bb",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "execution_count": 295,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "False    419\n",
+              "True     188\n",
+              "Name: Strength_Flag_dummy, dtype: int64"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 295
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ce-Xwmoum6cE"
+      },
+      "source": [
+        "price_data.Strength_Flag_dummy = price_data.Strength_Flag_dummy.replace(dictionary_bull)"
+      ],
+      "execution_count": 296,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "price_data.Strength_Flag_dum.value_counts()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "RoA6oGfPjU8X",
+        "outputId": "4d13a4b0-f04f-4204-c554-6970b37aba57"
+      },
+      "execution_count": 297,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "False    476\n",
+              "True     131\n",
+              "Name: Strength_Flag_dum, dtype: int64"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 297
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "price_data.Strength_Flag_dum = price_data.Strength_Flag_dum.replace(dictionary_bear)"
+      ],
+      "metadata": {
+        "id": "0Kjap4-2jZUl"
+      },
+      "execution_count": 298,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "price_data['Strength_Flag']=price_data.Strength_Flag_dum+price_data.Strength_Flag_dummy"
+      ],
+      "metadata": {
+        "id": "GAvudaHXjxPN"
+      },
+      "execution_count": 299,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "YLBANAd4LhKm"
+      },
+      "source": [
+        "X_Cols = price_data[features]\n",
+        "Y_Cols = price_data['Flag']\n",
+        "samp_train= int(len(price_data)*.75) -100\n",
+        "samp_test= samp_train+100\n",
+        "X_train = X_Cols[:samp_train]\n",
+        "X_test = X_Cols[samp_test:]\n",
+        "y_train = Y_Cols[:samp_train]\n",
+        "y_test = Y_Cols[samp_test:]"
+      ],
+      "execution_count": 300,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "LQ9Xbp-LJM14"
+      },
+      "source": [
+        "# Initialize 1st level models"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "k9jM7JiKsOyZ"
+      },
+      "source": [
+        "sample_w=price_data[:samp_train].Strength_Flag.values"
+      ],
+      "execution_count": 301,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ifO1vjloJM15"
+      },
+      "source": [
+        "models_L1 = [\n",
+        "    LogisticRegression(max_iter=1000),   \n",
+        "    svm.SVC(kernel='linear'),      \n",
+        "    ExtraTreesClassifier(random_state=0, n_jobs=-1,\n",
+        "                         n_estimators=100, max_depth=3,class_weight='balanced' ),\n",
+        "    \n",
+        "    RandomForestClassifier(random_state=0, n_jobs=-1, \n",
+        "                           n_estimators=200, max_depth=3,class_weight='balanced'),\n",
+        "    KNeighborsClassifier(n_neighbors=5,weights='uniform', algorithm='auto', \n",
+        "                          leaf_size=30, p=2, metric='minkowski', metric_params=None, n_jobs=None),\n",
+        "    LDA(solver='svd', shrinkage=None, priors=None, n_components=None,\n",
+        "        store_covariance=False, tol=0.0001, covariance_estimator=None),\n",
+        "                       \n",
+        "]"
+      ],
+      "execution_count": 302,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 54
+        },
+        "id": "OM69JNutuht0",
+        "outputId": "9c2c4dd2-6b0c-46f4-c7d2-ad0b8b9095b0"
+      },
+      "source": [
+        "'''XGBClassifier(random_state=0, n_jobs=-1, learning_rate=0.1,sample_weight=sample_w,\n",
+        "                  n_estimators=100, max_depth=3)'''"
+      ],
+      "execution_count": 303,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "'XGBClassifier(random_state=0, n_jobs=-1, learning_rate=0.1,sample_weight=sample_w,\\n                  n_estimators=100, max_depth=3)'"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            }
+          },
+          "metadata": {},
+          "execution_count": 303
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "a6f527E3WIW0",
+        "outputId": "75618289-2d2a-41eb-c902-0ccb3c27432f",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "source": [
+        "model_L1_0 = models_L1[0]\n",
+        "_ = model_L1_0.fit(X_train, y_train)\n",
+        "# save model in file if you need\n",
+        "\n",
+        "model_L1_1 = models_L1[1]\n",
+        "_ = model_L1_1.fit(X_train, y_train,sample_weight=sample_w)\n",
+        "# save model in file if you need\n",
+        "\n",
+        "model_L1_2 = models_L1[2]\n",
+        "_ = model_L1_2.fit(X_train, y_train,sample_weight=sample_w)\n",
+        "# save model in file if you need\n",
+        "\n",
+        "model_L1_3 = models_L1[3]\n",
+        "_ = model_L1_3.fit(X_train, y_train)\n",
+        "# save model in file if you need\n",
+        "model_L1_4 = models_L1[4]\n",
+        "_ = model_L1_4.fit(X_train, y_train)\n",
+        "# save model in file if you need\n",
+        "model_L1_5 = models_L1[5]\n",
+        "_ = model_L1_5.fit(X_train, y_train)\n",
+        "# save model in file if you need\n",
+        "\n"
+      ],
+      "execution_count": 304,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.8/dist-packages/sklearn/linear_model/_logistic.py:814: ConvergenceWarning: lbfgs failed to converge (status=1):\n",
+            "STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.\n",
+            "\n",
+            "Increase the number of iterations (max_iter) or scale the data as shown in:\n",
+            "    https://scikit-learn.org/stable/modules/preprocessing.html\n",
+            "Please also refer to the documentation for alternative solver options:\n",
+            "    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression\n",
+            "  n_iter_i = _check_optimize_result(\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "7m6O1MvnJM16"
+      },
+      "source": [
+        "# Perform stacking"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "_ZPqNj3-JM17",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "291da28d-9ee2-48d8-aa93-56c1d277afc1"
+      },
+      "source": [
+        "S_train, S_test = stacking(models_L1,                     # list of models\n",
+        "                           X_train, y_train, X_test,   # data\n",
+        "                           regression=False,           # classification task (if you need \n",
+        "                                                       #     regression - set to True)\n",
+        "                           mode='oof',                 # mode: oof for train set, predict test \n",
+        "                                                       #mode='oof_pred_bag'(for training) and oof for inference\n",
+        "                                                      #     set in each fold and vote\n",
+        "                           needs_proba=False,          # predict class labels (if you need \n",
+        "                                                       #     probabilities - set to True) \n",
+        "                           save_dir=None,              # do not save result and log (to save \n",
+        "                                                       #     in current dir - set to '.')\n",
+        "                           metric=accuracy_score,      # metric: callable\n",
+        "                           n_folds=4,                  # number of folds\n",
+        "                           stratified=True,            # stratified split for folds\n",
+        "                           shuffle=False,               # shuffle the data\n",
+        "                           random_state=None,             # ensure reproducibility\n",
+        "                           verbose=2)                  # print all info"
+      ],
+      "execution_count": 305,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "task:         [classification]\n",
+            "n_classes:    [3]\n",
+            "metric:       [accuracy_score]\n",
+            "mode:         [oof]\n",
+            "n_models:     [6]\n",
+            "\n",
+            "model  0:     [LogisticRegression]\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.8/dist-packages/sklearn/model_selection/_split.py:676: UserWarning: The least populated class in y has only 1 members, which is less than n_splits=4.\n",
+            "  warnings.warn(\n",
+            "/usr/local/lib/python3.8/dist-packages/sklearn/linear_model/_logistic.py:814: ConvergenceWarning: lbfgs failed to converge (status=1):\n",
+            "STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.\n",
+            "\n",
+            "Increase the number of iterations (max_iter) or scale the data as shown in:\n",
+            "    https://scikit-learn.org/stable/modules/preprocessing.html\n",
+            "Please also refer to the documentation for alternative solver options:\n",
+            "    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression\n",
+            "  n_iter_i = _check_optimize_result(\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "    fold  0:  [0.62921348]\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.8/dist-packages/sklearn/linear_model/_logistic.py:814: ConvergenceWarning: lbfgs failed to converge (status=1):\n",
+            "STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.\n",
+            "\n",
+            "Increase the number of iterations (max_iter) or scale the data as shown in:\n",
+            "    https://scikit-learn.org/stable/modules/preprocessing.html\n",
+            "Please also refer to the documentation for alternative solver options:\n",
+            "    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression\n",
+            "  n_iter_i = _check_optimize_result(\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "    fold  1:  [0.94382022]\n",
+            "    fold  2:  [0.85393258]\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.8/dist-packages/sklearn/linear_model/_logistic.py:814: ConvergenceWarning: lbfgs failed to converge (status=1):\n",
+            "STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.\n",
+            "\n",
+            "Increase the number of iterations (max_iter) or scale the data as shown in:\n",
+            "    https://scikit-learn.org/stable/modules/preprocessing.html\n",
+            "Please also refer to the documentation for alternative solver options:\n",
+            "    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression\n",
+            "  n_iter_i = _check_optimize_result(\n",
+            "/usr/local/lib/python3.8/dist-packages/sklearn/model_selection/_split.py:676: UserWarning: The least populated class in y has only 1 members, which is less than n_splits=4.\n",
+            "  warnings.warn(\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "    fold  3:  [0.77272727]\n",
+            "    ----\n",
+            "    MEAN:     [0.79992339] + [0.11565552]\n",
+            "    FULL:     [0.80000000]\n",
+            "\n",
+            "model  1:     [SVC]\n",
+            "    fold  0:  [0.67415730]\n",
+            "    fold  1:  [0.93258427]\n",
+            "    fold  2:  [0.85393258]\n",
+            "    fold  3:  [0.18181818]\n",
+            "    ----\n",
+            "    MEAN:     [0.66062308] + [0.29187701]\n",
+            "    FULL:     [0.66197183]\n",
+            "\n",
+            "model  2:     [ExtraTreesClassifier]\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.8/dist-packages/sklearn/model_selection/_split.py:676: UserWarning: The least populated class in y has only 1 members, which is less than n_splits=4.\n",
+            "  warnings.warn(\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "    fold  0:  [0.74157303]\n",
+            "    fold  1:  [0.83146067]\n",
+            "    fold  2:  [0.85393258]\n",
+            "    fold  3:  [0.44318182]\n",
+            "    ----\n",
+            "    MEAN:     [0.71753703] + [0.16388323]\n",
+            "    FULL:     [0.71830986]\n",
+            "\n",
+            "model  3:     [RandomForestClassifier]\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.8/dist-packages/sklearn/model_selection/_split.py:676: UserWarning: The least populated class in y has only 1 members, which is less than n_splits=4.\n",
+            "  warnings.warn(\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "    fold  0:  [0.62921348]\n",
+            "    fold  1:  [0.89887640]\n",
+            "    fold  2:  [0.83146067]\n",
+            "    fold  3:  [0.67045455]\n",
+            "    ----\n",
+            "    MEAN:     [0.75750128] + [0.11123377]\n",
+            "    FULL:     [0.75774648]\n",
+            "\n",
+            "model  4:     [KNeighborsClassifier]\n",
+            "    fold  0:  [0.34831461]\n",
+            "    fold  1:  [0.46067416]\n",
+            "    fold  2:  [0.68539326]\n",
+            "    fold  3:  [0.42045455]\n",
+            "    ----\n",
+            "    MEAN:     [0.47870914] + [0.12593641]\n",
+            "    FULL:     [0.47887324]\n",
+            "\n",
+            "model  5:     [LinearDiscriminantAnalysis]\n",
+            "    fold  0:  [0.71910112]\n",
+            "    fold  1:  [0.88764045]\n",
+            "    fold  2:  [0.83146067]\n",
+            "    fold  3:  [0.54545455]\n",
+            "    ----\n",
+            "    MEAN:     [0.74591420] + [0.13067856]\n",
+            "    FULL:     [0.74647887]\n",
+            "\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.8/dist-packages/sklearn/model_selection/_split.py:676: UserWarning: The least populated class in y has only 1 members, which is less than n_splits=4.\n",
+            "  warnings.warn(\n",
+            "/usr/local/lib/python3.8/dist-packages/sklearn/model_selection/_split.py:676: UserWarning: The least populated class in y has only 1 members, which is less than n_splits=4.\n",
+            "  warnings.warn(\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "FcFsGaXJJM1-"
+      },
+      "source": [
+        "# Look at the result\n",
+        "\n",
+        "So now we have OOF from 1st level models and we can build 2nd level model.  \n",
+        "But first let's look at the result.  \n",
+        "We have three 1st level models, so we expect to get three columns in `S_train` and `S_test`.  "
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "aRPrZuVGJM2B"
+      },
+      "source": [
+        "# XGboost\n",
+        "model_L1_X = XGBClassifier(learning_rate =0.1,\n",
+        " n_estimators=100,\n",
+        " max_depth=3,\n",
+        " min_child_weight=1,\n",
+        " gamma=0,\n",
+        " reg_alpha= 0.01,\n",
+        " subsample=0.75,\n",
+        " colsample_bytree=0.75,\n",
+        " objective= 'binary:logistic',\n",
+        " nthread=4,\n",
+        " scale_pos_weight=1,\n",
+        " seed=27)\n",
+        "    \n",
+        "# Fit 2nd level model\n",
+        "dummy_train = model_L1_X.fit(X_train,y_train)\n",
+        "# Predict\n",
+        "#y_pred = model_L2.predict(S_test)\n",
+        "\n",
+        "# Final prediction score\n",
+        "#print('Final prediction score: [%.8f]' % accuracy_score(y_test, y_pred))"
+      ],
+      "execution_count": 307,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Gz6Cwg1LJM2B"
+      },
+      "source": [
+        "# Apply 2nd level model"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Initialize 2nd level model\n",
+        "model_L2 = XGBClassifier(learning_rate =0.1,\n",
+        " n_estimators=100,\n",
+        " max_depth=3,\n",
+        " min_child_weight=1,\n",
+        " gamma=0,\n",
+        " reg_alpha= 0.01,\n",
+        " subsample=0.75,\n",
+        " colsample_bytree=0.75,\n",
+        " objective= 'binary:logistic',\n",
+        " nthread=4,\n",
+        " scale_pos_weight=1,\n",
+        " seed=27)\n",
+        "S_train=np.c_[S_train,dummy_train]    \n",
+        "# Fit 2nd level model\n",
+        "_ = model_L2.fit(S_train,y_train)\n",
+        "# Predict\n",
+        "y_pred = model_L2.predict(S_test)\n",
+        "\n",
+        "# Final prediction score\n",
+        "#print('Final prediction score: [%.8f]' % accuracy_score(y_test, y_pred))"
+      ],
+      "metadata": {
+        "id": "JhUvtN18NlgQ",
+        "outputId": "4f295b8e-1b89-4b28-e70e-9ea9220fbd86",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 409
+        }
+      },
+      "execution_count": 308,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "ValueError",
+          "evalue": "ignored",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mValueError\u001b[0m                                Traceback (most recent call last)",
+            "\u001b[0;32m<ipython-input-308-5e8e4a02fb86>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m     12\u001b[0m  \u001b[0mscale_pos_weight\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     13\u001b[0m  seed=27)\n\u001b[0;32m---> 14\u001b[0;31m \u001b[0mS_train\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mnp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mc_\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mS_train\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0mdummy_train\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     15\u001b[0m \u001b[0;31m# Fit 2nd level model\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     16\u001b[0m \u001b[0m_\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mmodel_L2\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mfit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mS_train\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0my_train\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;32m/usr/local/lib/python3.8/dist-packages/numpy/lib/index_tricks.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, key)\u001b[0m\n\u001b[1;32m    411\u001b[0m                 \u001b[0mobjs\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mk\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mobjs\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mk\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mastype\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mfinal_dtype\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    412\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 413\u001b[0;31m         \u001b[0mres\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mconcatenate\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtuple\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mobjs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0maxis\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0maxis\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    414\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    415\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mmatrix\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;32m<__array_function__ internals>\u001b[0m in \u001b[0;36mconcatenate\u001b[0;34m(*args, **kwargs)\u001b[0m\n",
+            "\u001b[0;31mValueError\u001b[0m: all the input array dimensions for the concatenation axis must match exactly, but along dimension 0, the array at index 0 has size 355 and the array at index 1 has size 1"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "hJyo5IDKSbr5"
+      },
+      "source": [
+        "# UNDER PRODUCTION\n",
+        "def data_meta(id, x, y, dummy):\n",
+        "  #get prediction from model 1\n",
+        "  #pred_prob_meta = model.predict_proba(x)[:,1]\n",
+        "  pred_prob_meta = pd.Series(dummy, \\\n",
+        "  index=x.index,\n",
+        "  name=f'pred_{id}_meta')\n",
+        "  pred_int_meta = pred_prob_meta > Threshold\n",
+        "  y_meta = pd.Series(y & pred_int_meta, name=f'y_train_meta_{id}')\n",
+        "  x_meta = x.join(pred_int_meta)\n",
+        "  return x_meta, y_meta"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "ulins-1nSBHK"
+      },
+      "source": [
+        "# Make Predictions"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "zGgNR1ce6nJL"
+      },
+      "source": [
+        "nifty_test=yf.download(tker,start=START_testing)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "vKhbIiUPShcw"
+      },
+      "source": [
+        "#nifty_test = pdr.get_data_yahoo(tker, start=START)\n",
+        "nifty_test=nifty_test.dropna()\n",
+        "nifty_test=nifty_test.iloc[:,:4]"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "VAYNp7JcSnHY"
+      },
+      "source": [
+        "# Calculate 30 Day Moving Average, Std Deviation, Upper Band and Lower Band\n",
+        "\n",
+        "nifty_test['30 Day MA'] = nifty_test['Close'].rolling(window=20).mean()\n",
+        "\n",
+        "# set .std(ddof=0) for population std instead of sample\n",
+        "nifty_test['30 Day STD'] = nifty_test['Close'].rolling(window=20).std() \n",
+        "\n",
+        "nifty_test['Upper Band'] = nifty_test['30 Day MA'] + (nifty_test['30 Day STD'] *1.5)\n",
+        "nifty_test['Lower Band'] = nifty_test['30 Day MA'] - (nifty_test['30 Day STD'] *1.5)\n",
+        "nifty_test['ADV_26'] = nifty_test['Close'].rolling(window=26).mean()\n",
+        "nifty_test['ADV_13'] = nifty_test['Close'].rolling(window=10).mean()\n",
+        "nifty_test.ta.macd(append=True)\n",
+        "nifty_test.ta.vortex(length=18,append=True)\n",
+        "nifty_test.ta.aroon(length=18,append=True)\n",
+        "nifty_test.ta.rsi(length=18,append=True)\n",
+        "df = nifty_test.copy()\n",
+        "# I Just need the Close\n",
+        "price_data_new = df.copy()\n",
+        "\n",
+        "price_data_new.head(2)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "PokeNbVgTyUA"
+      },
+      "source": [
+        "# Group by the `Symbol` column, then grab the `Close` column.\n",
+        "#close_groups = price_data_new['Close']\n",
+        "\n",
+        "# Apply the lambda function which will return -1.0 for down, 1.0 for up and 0.0 for no change.\n",
+        "#close_groups = close_groups.transform(lambda x : np.sign(x.diff(days_out)))\n",
+        "\n",
+        "# add the data to the main dataframe.\n",
+        "#price_data_new['Prediction'] = close_groups\n",
+        "price_data_new = price_data_new.dropna()\n",
+        "\n",
+        "X_Cols = price_data_new[features]\n",
+        "#Y_Cols = price_data_new['Prediction']\n",
+        "\n",
+        "X_test_new = X_Cols\n"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "TuveNmcYR7Jp"
+      },
+      "source": [
+        "#[4] Then new test set (X_test_new) comes. We load our 1st level models and predict new test set to get stacked features (S_test_new):\n",
+        "y_pred_L1_0 = model_L1_0.predict(X_test_new)\n",
+        "y_pred_L1_1 = model_L1_1.predict(X_test_new)\n",
+        "y_pred_L1_2 = model_L1_2.predict(X_test_new)\n",
+        "y_pred_L1_3 = model_L1_3.predict(X_test_new)\n",
+        "y_pred_L1_4 = model_L1_4.predict(X_test_new)\n",
+        "y_pred_L1_5 = model_L1_5.predict(X_test_new)\n",
+        "y_pred_l1_6= model_L1_X.predict(X_test_new)\n",
+        "S_test_new = np.c_[y_pred_L1_0, y_pred_L1_1,y_pred_L1_2,y_pred_L1_3,y_pred_L1_4,y_pred_L1_5]\n",
+        "#[5] Then we load our 2nd level model and predict S_test_new to get final prediction:\n",
+        "\n",
+        "#y_pred_new = model_L2.predict(S_test_new)\n"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "S_test_new[-5:]#.sum(axis=1)"
+      ],
+      "metadata": {
+        "id": "gsBbeg54Tlz7"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "h7EoF7_c4gfC"
+      },
+      "source": [
+        "y_pred_new_p = model_L2.predict_proba(S_test_new)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "O4631FYG28qH"
+      },
+      "source": [
+        "y_pred_new_p=max(y_pred_new_p[-1].tolist())*100\n",
+        "print(f'The Probability of the confident class is {round(y_pred_new_p,3)}% ')"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "GrKKuAMLcXdL"
+      },
+      "source": [
+        "if trend_decider=='impulse':\n",
+        "  price_data_new=price_data_new.assign(Flag=(price_data_new['MACDh_12_26_9'].lt(price_data_new['MACDh_12_26_9'].shift(1)) & price_data_new['ADV_13'].lt(price_data_new['ADV_13'].shift(1))))\n",
+        "elif trend_decider=='sma':  \n",
+        "  price_data_new= price_data_new.assign(Flag=price_data_new['ADV_50'].lt(price_data_new['ADV_50'].shift()))\n",
+        "elif trend_decider=='long':\n",
+        "  price_data_new= price_data_new.assign(Flag=price_data_new['ADV_50'].lt(price_data_new['ADV_50'].shift(period)))\n",
+        "elif trend_decider=='percentchange':\n",
+        "  close_groups = price_data_new['Close'].transform(lambda x : np.sign(x.diff(days_out)))\n",
+        "  price_data_new['Flag'] = close_groups\n",
+        "  price_data_new.dropna(inplace=True)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "close_groups.value_counts()"
+      ],
+      "metadata": {
+        "id": "jcVaNJ3ZkySd"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "mHgZjKCbrKws"
+      },
+      "source": [
+        "'''\n",
+        "price_data_new=price_data_new.assign(Strength_Flag_dummy=(price_data_new['MACDh_12_26_9'].gt(price_data_new['MACDh_12_26_9'].shift()) & price_data_new['ADV_13'].gt(price_data_new['ADV_13'].shift())))\n",
+        "price_data_new=price_data_new.assign(Strength_Flag_dum=(price_data_new['MACDh_12_26_9'].lt(price_data_new['MACDh_12_26_9'].shift()) & price_data_new['ADV_13'].lt(price_data_new['ADV_13'].shift())))\n",
+        "price_data_new.dropna(inplace=True)\n",
+        "price_data_new.Strength_Flag_dum = price_data_new.Strength_Flag_dum.replace(dictionary_bear)\n",
+        "price_data_new.Strength_Flag_dummy = price_data_new.Strength_Flag_dummy.replace(dictionary_bull)\n",
+        "price_data_new['Strength_Flag']=price_data_new.Strength_Flag_dum+price_data_new.Strength_Flag_dummy\n",
+        "'''"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "vJ3THHO3rmAV"
+      },
+      "source": [
+        "#price_data_new.Strength_Flag = price_data_new.Strength_Flag.replace(dictionary)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "i0jAa_ICQNrr"
+      },
+      "source": [
+        "price_data_new.tail(2)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "W7qDWTE4Yvjb"
+      },
+      "source": [
+        "if trend_decider !='percentchange':\n",
+        "  #price_data_new.Flag = price_data_new.Flag.replace({True: 0, False: 1})\n",
+        "  y_pred_new=y_pred_new.astype(int)\n",
+        "  indices_one = y_pred_new == 1\n",
+        "  indices_zero = y_pred_new == 0\n",
+        "  y_pred_new[indices_one] = 0 # replacing 1s with 0s\n",
+        "  y_pred_new[indices_zero] = 1 # replacing 0s with 1s\n",
+        "if trend_decider =='percentchange':\n",
+        "  #price_data_new.Flag = np.where(price_data_new.close>price_data_new.close.shift(1),1,-1)\n",
+        "  print('done')"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "T01QOoTOfOUT"
+      },
+      "source": [
+        "actuals=price_data_new['Flag'].dropna()\n",
+        "actuals.value_counts()"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "M5IAnKFgB_1D"
+      },
+      "source": [
+        "np.where(np.isinf(price_data_new['Flag']))"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "S38sLevEFix2"
+      },
+      "source": [
+        "price_data_new = price_data_new.fillna(lambda x: x.median())\n",
+        "price_data_new = price_data_new.replace({0:1})"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "9yy5Qk7mMOOd"
+      },
+      "source": [
+        "y_pred_new= y_pred_new[-len(price_data_new.Flag):]"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "VAEVRk29R7HF"
+      },
+      "source": [
+        "from sklearn.metrics import average_precision_score\n",
+        "average_precision = average_precision_score(price_data_new['Flag'],y_pred_new)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "osaA1DNae1mt"
+      },
+      "source": [
+        "from sklearn.metrics import confusion_matrix, plot_confusion_matrix\n",
+        "\n",
+        "rf_matrix = confusion_matrix(price_data_new.Flag, y_pred_new)\n",
+        "\n",
+        "true_negatives = rf_matrix[0][0]\n",
+        "false_negatives = rf_matrix[1][0]\n",
+        "true_positives = rf_matrix[1][1]\n",
+        "false_positives = rf_matrix[0][1]\n"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "NoTAiA9VfLQ9"
+      },
+      "source": [
+        "accuracy = (true_negatives + true_positives) / (true_negatives + true_positives + false_negatives + false_positives)\n",
+        "percision = true_positives / (true_positives + false_positives)\n",
+        "recall = true_positives / (true_positives + false_negatives)\n",
+        "specificity = true_negatives / (true_negatives + false_positives)\n",
+        "f1score= 2*recall*percision/(percision+recall)\n",
+        "print('Accuracy: {}'.format(float(accuracy)))\n",
+        "print('Percision: {}'.format(float(percision)))\n",
+        "print('Recall: {}'.format(float(recall)))\n",
+        "print('Specificity: {}'.format(float(specificity)))\n",
+        "print('F1-Score: {}'.format(float(f1score)))\n",
+        "print('Average Precision : {}'.format(float(average_precision)))\n"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from sklearn.metrics import classification_report\n",
+        "print(classification_report(price_data_new.Flag, y_pred_new))"
+      ],
+      "metadata": {
+        "id": "4xaY7ndYl9KD"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ouTJ66VGTcYJ"
+      },
+      "source": [
+        "buy= np.where(y_pred_new==1)\n",
+        "sell= np.where(y_pred_new==-1) #0 if impulse !!!\n",
+        "b_a=np.where(price_data_new.Flag.values==1)\n",
+        "s_a=np.where(price_data_new.Flag.values==0)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "c9Vimzk2UNmM"
+      },
+      "source": [
+        "buy=buy[0].tolist()\n",
+        "sell=sell[0].tolist()"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "yYhax08ULPzd"
+      },
+      "source": [
+        "buy[-1]"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "9JZHWbJEKZRN"
+      },
+      "source": [
+        "len(y_pred_new)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "pq3nKxZAK64-"
+      },
+      "source": [
+        "df.reset_index().columns"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df_psar=psar(df.reset_index())#,iaf = 0.04, maxaf = 0.4"
+      ],
+      "metadata": {
+        "id": "BBYdXoDfhD79"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df_psar.set_index('dates',inplace=True)"
+      ],
+      "metadata": {
+        "id": "TNcK00WRkitc"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "rapida = 18\n",
+        "lenta = 26\n",
+        "stdv = 0.5\n",
+        "df['fast'] =df['Close'].ewm(span=rapida).mean()\n",
+        "df['slow'] =df['Close'].ewm(span=lenta).mean()\n",
+        "df['bband']= df['fast']-df['slow']\n",
+        "df['avg'] = df['bband'].rolling(window=9).mean()\n",
+        "df['Sdev'] = df['bband'].rolling(window=9).std()\n",
+        "df['Upper Band'] = df['avg'] + (df['Sdev'] *stdv)\n",
+        "df['Lower Band'] = df['avg'] - (df['Sdev'] *stdv)"
+      ],
+      "metadata": {
+        "id": "BSrfcAOu5Wdj"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "rapida = 18*1.2\n",
+        "lenta = 26*1.2\n",
+        "stdv =0.8\n",
+        "df['fast'] =df['Close'].ewm(span=rapida).mean()\n",
+        "df['slow'] =df['Close'].ewm(span=lenta).mean()\n",
+        "df['bband']= df['fast']-df['slow']\n",
+        "df['avg'] = df['bband'].rolling(window=10).mean()\n",
+        "df['Sdev'] = df['bband'].rolling(window=12).std()\n",
+        "df['Upper Band'] = df['avg'] + (df['Sdev'] *stdv)\n",
+        "df['Lower Band'] = df['avg'] - (df['Sdev'] *stdv)\n",
+        "df['spread'] = df['bband'] - df['Lower Band']\n",
+        "df['spread_1'] = -(df['bband'] - df['Upper Band'])"
+      ],
+      "metadata": {
+        "id": "J08zZlXzdCev"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df['dnsignal']=np.where(df['spread_1']>df['spread_1'].rolling(window=30).mean(),-1,0)\n",
+        "df['upsignal']=np.where(df['spread']>df['spread'].rolling(window=30).mean(),1,0)"
+      ],
+      "metadata": {
+        "id": "6GiN6g1XBNE9"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "6gnZhe0zRX_h"
+      },
+      "source": [
+        "import matplotlib.pyplot as plt\n",
+        "fig, ax = plt.subplots(5,1, figsize=(25,7),sharex=True)\n",
+        "ax[0].plot(price_data_new.loc[:, :].index, price_data_new.loc[:, 'Close'])\n",
+        "ax[1].plot(price_data_new.loc[:, :].index, y_pred_new, label='Nifty')\n",
+        "ax[0].scatter(price_data_new.iloc[buy].index,price_data_new.iloc[buy].Close,marker='^',label='Buy',color='g')\n",
+        "ax[0].scatter(price_data_new.iloc[sell].index,price_data_new.iloc[sell].Close,marker='.',label='Sell',color='r')\n",
+        "ax[2].plot(df[['bband']][:],color='r')\n",
+        "ax[2].plot(df[['avg',]][:],color='b')\n",
+        "ax[2].plot(df[['Upper Band',]][:],color='y')\n",
+        "ax[2].plot(df[['Lower Band']][:],color='c')\n",
+        "ax[2].axhline(y=0)\n",
+        "ax[3].plot(df['upsignal'] , label='up')\n",
+        "ax[4].plot(df['dnsignal'],label='dn')\n",
+        "ax[0].plot(df_psar[['psarbear']][-(len(price_data_new)):],color='r')\n",
+        "ax[0].plot(df_psar[['psarbull']][-(len(price_data_new)):],color='g')\n",
+        "ax[0].legend(loc='upper left')\n",
+        "ax[3].legend(loc='upper left')\n",
+        "ax[4].legend(loc='upper left')\n",
+        "ax[0].set_ylabel('Nifty')\n",
+        "ax[1].legend('ML Signal')\n",
+        "ax[1].legend(loc='best')\n",
+        "fig.suptitle('Model : '+ trend_decider +' with period :' + str(period))\n",
+        "plt.savefig('ml.png')\n",
+        "plt.show()\n"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "fig, ax = plt.subplots(3,1, figsize=(25,10),sharex=True)\n",
+        "ax[0].plot(df.loc[:, 'Close'])\n",
+        "ax[0].plot(df.loc[:,'Close'].rolling(window=32).mean())\n",
+        "ax[1].plot(df[['bband']][:],color='r')\n",
+        "ax[1].plot(df[['avg',]][:],color='b')\n",
+        "ax[1].plot(df[['Upper Band',]][:],color='y')\n",
+        "ax[1].plot(df[['Lower Band']][:],color='c')\n",
+        "ax[2].plot(df['Upper Band']-df['Lower Band'])\n",
+        "ax[2].axhline(y=20)\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "nSn7ySIf2OTF"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.columns"
+      ],
+      "metadata": {
+        "id": "kb-oq7Q52mSN"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "2CqS5WTCpl6o"
+      },
+      "source": [
+        "print(f'The Probability of the confident class is {round(y_pred_new_p,3)}%')"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "fig, ax = plt.subplots(2,1, figsize=(25,7),sharex=True)\n",
+        "ax[0].plot(pd.Series(price_data_new['Close'].values,),'*-')\n",
+        "rng = np.arange(-9,8,1)\n",
+        "ax[1].set_yticks(rng)\n",
+        "ax[1].plot(pd.Series(S_test_new[12:].sum(axis=1)),'k*-')\n",
+        "ax[1].plot(pd.Series(S_test_new[12:].sum(axis=1)).rolling(window=15).mean())\n",
+        "ax[1].axhline(y=0);"
+      ],
+      "metadata": {
+        "id": "jFE5-O9CHL9m"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "S_test_new[-5:]"
+      ],
+      "metadata": {
+        "id": "PaelWeUlZ12Y"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "price_data_new['predictions']=np.where(y_pred_new>0,1,0)"
+      ],
+      "metadata": {
+        "id": "_lV05VgJHw_-"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "X74oyjeQqfpv"
+      },
+      "source": [
+        "# Calculate daily returns\n",
+        "price_data_new['Return'] = price_data_new.Close.pct_change()\n",
+        "\n",
+        "# Calculate strategy returns\n",
+        "price_data_new['Strategy_Return'] = price_data_new.Return * price_data_new.predictions.shift(1)\n",
+        "\n",
+        "# Calculate geometric returns\n",
+        "geometric_returns = (price_data_new.Strategy_Return+1).cumprod()\n",
+        "\n",
+        "# Plot geometric returns\n",
+        "geometric_returns.plot(figsize=(10, 7),color='g')\n",
+        "plt.ylabel(\"Strategy Returns (%)\")\n",
+        "plt.xlabel(\"Date\")\n",
+        "plt.show()"
+      ],
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
