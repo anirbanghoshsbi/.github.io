@@ -1,5 +1,5 @@
 # Base Decision on these
-
+[Here NIFTY PE ➡️](https://trendlyne.com/equity/PE/NIFTY50/1887/nifty-50-price-to-earning-ratios/?utm_source=pocket_saves)
 ***Short Term*** Trade Decision Based on 
 | Name  | Value   | Site |
 |---|---|---|
