@@ -1,4 +1,4 @@
-Index Name,Date,P/E,P/B,Div Yield %,Open,High,Low,Close
+Index Name,Date,feat_P/E,feat_P/B,feat_Div_Yield_%,Open,High,Low,Close
 NIFTY 500,04-Jan-10,20.96,3.3,1,4343.1,4372.3,4334.95,4367.6
 NIFTY 500,05-Jan-10,21.21,3.34,0.99,4406.5,4422.9,4396.7,4416
 NIFTY 500,06-Jan-10,21.24,3.35,0.99,4430.05,4438.65,4405.55,4422.6
