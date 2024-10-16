@@ -1,4 +1,18 @@
+Here’s an easy-to-remember **Cross-Sectional Momentum To-Do List**:
 
+1. **Select assets** across diverse classes (stocks, bonds, commodities).
+2. **Rank by performance** over a defined period (e.g., 12 months).
+3. **Create portfolios**: Long top performers, short bottom performers.
+4. **Adjust positions** for **beta** (market sensitivity) and **volatility**.
+5. **Reduce turnover** to minimize transaction costs.
+6. Apply **regime-based filters** (adjust for market conditions).
+7. Use **ensemble models** for better robustness.
+8. **Backtest regularly** to ensure strategy consistency.
+
+This to-do list can serve as a practical guide for managing the strategy.
+
+
+################################################################################################################################################
 Introduction
 
 Index
