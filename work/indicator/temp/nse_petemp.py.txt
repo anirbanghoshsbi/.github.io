@@ -1,0 +1,363 @@
+from datetime import date
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import warnings
+import numpy as np
+warnings.filterwarnings("ignore")
+
+data= pd.read_csv("https://raw.githubusercontent.com/anirbanghoshsbi/.github.io/master/work/ml/data_fundamental.csv")
+
+data=data.tail(750)
+
+data.set_index('Date',inplace=True)
+
+#data.set_index('Date',inplace=True)
+data['mov50']= data['feat_Div_Yield'].rolling(window=18).mean()
+data['price_above_50dma']=data['Close'].rolling(window=50).mean()
+
+data["pe_50dma"] = data["feat_PE"].rolling(50).mean()
+data["pe_spread"] = data["feat_PE"] - data["pe_50dma"]
+data["dy_pct"] = data["feat_Div_Yield"].rank(pct=True)
+
+data.tail(2)
+
+#data[['feat_Div_Yield','feat_PB','feat_PE','Open','High','Low','Close']].to_csv('data_fundamental.csv')
+
+# Assume 'pe_ratios' is your time series of P/E ratios
+pe_ratios = data['feat_PE']
+
+# Calculate mean and MAD
+mean_pe = pe_ratios.median()
+mad_pe = (pe_ratios - mean_pe).abs().mean()
+
+# Calculate percentiles
+percentiles = pe_ratios.quantile([0.1, 0.25, 0.5, 0.75, 0.9])
+data['percentile']=percentiles
+# Plot
+plt.figure(figsize=(12, 6))
+plt.hist(pe_ratios, bins=50, alpha=0.7)
+plt.axvline(mean_pe, color='r', linestyle='dashed', label='Mean')
+plt.axvline(mean_pe + mad_pe, color='g', linestyle='dashed', label='Mean + MAD')
+plt.axvline(mean_pe - mad_pe, color='g', linestyle='dashed', label='Mean - MAD')
+
+for p, v in percentiles.items():
+    plt.axvline(v, color='orange', linestyle=':', label=f'{p*100}th percentile')
+
+plt.title('P/E Ratio Distribution with MAD and Percentile Markers')
+plt.xlabel('P/E Ratio')
+plt.ylabel('Frequency')
+plt.legend()
+plt.show()
+
+print(f"Mean P/E: {mean_pe:.2f}")
+print(f"MAD: {mad_pe:.2f}")
+print("Percentiles:")
+print(percentiles)
+
+# Evaluate current P/E
+current_pe = data['feat_PE'].iloc[-1]  # Example current P/E
+mad_score = (current_pe - mean_pe) / mad_pe
+percentile_score = sum(pe_ratios < current_pe) / len(pe_ratios) * 100
+
+print(f"\nCurrent P/E: {current_pe}")
+print(f"MAD Score: {mad_score:.2f} MADs from mean")
+print(f"Percentile Score: {percentile_score:.2f}th percentile")
+
+
+from scipy import stats
+
+# Assuming you have a DataFrame 'df' with 'date' and 'pe' columns
+# If not, you can create a sample DataFrame like this:
+# df = pd.DataFrame({
+#     'date': pd.date_range(start='2020-01-01', periods=100, freq='D'),
+#     'pe': np.random.uniform(10, 30, 100)
+# })
+
+# Calculate percentile scores
+data['pe_percentile'] = stats.percentileofscore(data['feat_PE'], data['feat_PE'], kind='weak')
+data['pe_pct_roc'] = (data['pe_percentile'] - data['pe_percentile'].shift(10))
+'''
+# Create the plot
+plt.figure(figsize=(12, 6))
+plt.plot(data['pe_percentile'].tail(1200))
+plt.title('PE Ratio Percentile Score Over Time')
+plt.xlabel('Time')  # You can remove this line if you don't want any x-axis label
+plt.ylabel('Percentile Score')
+plt.grid(True)
+
+# Remove x-axis ticks and labels
+plt.gca().xaxis.set_major_locator(plt.NullLocator())
+plt.gca().xaxis.set_minor_locator(plt.NullLocator())
+
+# Add horizontal lines at 20th and 80th percentiles
+plt.axhline(y=20, color='r', linestyle='--', label='20th percentile')
+plt.axhline(y=80, color='g', linestyle='--', label='80th percentile')
+
+plt.legend()
+plt.tight_layout()
+plt.show()
+'''
+
+'''
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Assuming 'data' is your DataFrame with columns: 'pe_percentile' and 'nifty'
+# If it's not, you might need to prepare your data accordingly
+
+# Create the plot with two subplots
+fig, (ax1, ax2 , ax3) = plt.subplots(3, 1, figsize=(10,5), sharex=True)
+
+# Plot PE Percentile Score
+ax1.plot(data['pe_percentile'].tail(1800))
+ax1.set_title('PE Ratio Percentile Score Over Time')
+ax1.set_ylabel('Percentile Score')
+ax1.grid(True)
+ax1.axhline(y=20, color='r', linestyle='--')
+ax1.axhline(y=80, color='g', linestyle='--')
+ax1.legend()
+
+# Plot Nifty Index
+ax2.plot(data['Close'].tail(1800))
+ax2.set_title('Nifty Index Over Time')
+ax2.set_ylabel('Nifty Index Value')
+ax2.grid(True)
+ax3.plot(data['pe_pct_roc'].tail(1800))
+ax3.set_title('Nifty Index Over Time')
+ax3.set_ylabel('PE ROC')
+ax3.grid(True)
+# Remove x-axis ticks and labels
+ax1.xaxis.set_major_locator(plt.NullLocator())
+ax1.xaxis.set_minor_locator(plt.NullLocator())
+ax2.xaxis.set_major_locator(plt.NullLocator())
+ax2.xaxis.set_minor_locator(plt.NullLocator())
+ax3.xaxis.set_major_locator(plt.NullLocator())
+ax3.xaxis.set_minor_locator(plt.NullLocator())
+
+# Adjust layout and display the plot
+plt.tight_layout()
+plt.show()
+'''
+
+'''
+# Create the plot with two subplots
+fig, (ax1, ax2 ) = plt.subplots(2, 1, figsize=(10,5), sharex=True)
+
+
+
+# Plot Nifty Index
+ax1.plot(data['Close'].tail(1800))
+ax1.set_title('Nifty Index Over Time')
+ax1.set_ylabel('Nifty Index Value')
+ax1.grid(True)
+ax2.plot(data['pe_pct_roc'].tail(1800))
+ax2.set_title('Nifty Index Over Time')
+ax2.set_ylabel('PE ROC')
+ax2.grid(True)
+# Remove x-axis ticks and labels
+ax1.xaxis.set_major_locator(plt.NullLocator())
+ax1.xaxis.set_minor_locator(plt.NullLocator())
+ax2.xaxis.set_major_locator(plt.NullLocator())
+ax2.xaxis.set_minor_locator(plt.NullLocator())
+
+# Adjust layout and display the plot
+plt.tight_layout()
+plt.show()
+'''
+
+data.shape
+
+#data=data.tail(1200)
+
+data.shape
+
+'''
+# Create subplots
+fig, axs = plt.subplots(2, 1, figsize=(10, 4), sharex=True)
+axs[1].axhline(y=1.4,color='g');
+axs[1].axhline(y=1.3,color='r');
+# Plot 'Close'
+axs[0].plot(data['Close'], color='b')
+axs[0].set_ylabel('Close')
+
+# Plot 'Div Yield'
+axs[1].plot( data['feat_Div_Yield'],  color='g')
+axs[1].set_ylabel('feat_Div_Yield')
+axs[1].plot(data['mov50'],color='y')
+axs[1].invert_yaxis()
+# Format date on x-axis to show only month and year
+date_format = mdates.DateFormatter('%Y')
+axs[1].xaxis.set_major_formatter(date_format)
+
+# Display the plot
+plt.tight_layout()
+plt.show()
+'''
+
+'''
+# Create subplots
+fig, axs = plt.subplots(2, 1, figsize=(10, 4), sharex=True)
+# Plot 'Close'
+axs[0].plot(data['Close'], color='b')
+axs[0].set_ylabel('Close')
+
+# Plot 'Div Yield'
+axs[1].plot( data['feat_PE'],  color='k')
+axs[1].set_ylabel('feat_PE')
+axs[1].plot(data['feat_PE'].rolling(window=50).mean(),color='y')
+axs[0].plot(data['Close'].rolling(window=50).mean(),color='y')
+#axs[1].invert_yaxis()
+# Format date on x-axis to show only month and year
+date_format = mdates.DateFormatter('%Y')
+axs[1].xaxis.set_major_formatter(date_format)
+
+# Display the plot
+plt.tight_layout()
+plt.show()
+'''
+
+'''
+import matplotlib.pyplot as plt
+
+# Assuming 'data' is a pandas DataFrame already loaded with the necessary columns: 'feat_PE' and 'Close'
+
+# Compute the rolling mean adjustment for 'feat_PE'
+adjusted_feat_PE = -1 * (data['feat_PE'].rolling(window=50).mean() - data['feat_PE'])
+
+# Create the subplots
+fig, axes = plt.subplots(2, 1, figsize=(10,4),sharex=True)
+
+# Plot the adjusted 'feat_PE' in the first subplot
+axes[0].plot(adjusted_feat_PE, label='Adjusted feat_PE', color='blue')
+axes[0].axhline(y=0, color='c', linestyle='--', label='0')
+axes[0].axhline(y=-1.5, color='g', linestyle='--', label='-1.5')
+axes[0].axhline(y=1.35, color='r', linestyle='--', label='1.5')
+axes[0].set_title("Adjusted feat_PE")
+axes[0].set_xlabel("Index")
+axes[0].set_ylabel("Value")
+#axes[0].legend()
+
+# Plot 'Close' in the second subplot
+axes[1].plot(data['Close'], label='Close', color='green')
+axes[1].set_title("Close Prices")
+axes[1].set_xlabel("Index")
+axes[1].set_ylabel("Price")
+axes[1].legend()
+
+# Adjust layout and show the plot
+plt.tight_layout()
+plt.show()
+'''
+
+data["future_return"] = data["Close"].shift(-20) / data["Close"] - 1
+
+data["target"] = (data["Close"].shift(-20) > data["Close"]).astype(int)
+
+data["pe_bucket"] = pd.qcut(data["feat_Div_Yield"], 5)
+
+print('20 Days Return \n ' ,round(data.groupby("pe_bucket")["future_return"].mean()*100,2))
+
+print('How often the price is higher than 20 days back :\n' ,data.groupby("pe_bucket")["target"].mean())
+
+
+high_low = data["High"] - data["Low"]
+high_close = (data["High"] - data["Close"].shift()).abs()
+low_close = (data["Low"] - data["Close"].shift()).abs()
+
+data["TR"] = pd.concat([high_low, high_close, low_close], axis=1).max(axis=1)
+data["ATR"] = data["TR"].rolling(14).mean()
+
+# --- EMA ---
+data["ema13"] = data["Close"].ewm(span=13, adjust=False).mean()
+
+# EMA direction
+data["ema13_slope"] = data["ema13"].diff()
+
+# --- MACD ---
+ema12 = data["Close"].ewm(span=12, adjust=False).mean()
+ema26 = data["Close"].ewm(span=26, adjust=False).mean()
+
+data["macd"] = ema12 - ema26
+data["macd_signal"] = data["macd"].ewm(span=9, adjust=False).mean()
+data["macd_hist"] = data["macd"] - data["macd_signal"]
+
+# Histogram slope
+data["macd_hist_slope"] = data["macd_hist"].diff()
+
+# --- Elder Impulse ---
+conditions = [
+    (data["ema13_slope"] > 0) & (data["macd_hist_slope"] > 0) & (data['Close'].rolling(window=50).mean()<data['Close']),
+    (data["ema13_slope"] < 0) & (data["macd_hist_slope"] < 0) & (data['Close'].rolling(window=50).mean()>data['Close'])
+]
+
+choices = [1, -1]   # 1 = Green (Bullish), -1 = Red (Bearish)
+
+data["elder_impulse"] = np.select(conditions, choices, default=0)
+
+# Optional readable label
+data["impulse_label"] = data["elder_impulse"].map({
+    1: "green",
+    -1: "red",
+    0: "blue"
+})
+
+data.columns
+
+data["future_return_10"] = data["Close"].shift(-20) / data["Close"] - 1
+
+bins = [0,20,40,60,80,100]
+labels = ["20 Percentile","40 Percentile","60 Percentile","80 Percentile", "100 Percentile"]
+
+data["pe_pct_bucket"] = pd.cut(data["pe_percentile"], bins=bins, labels=labels)
+
+result = (
+    data
+    .groupby(["pe_pct_bucket", "elder_impulse"])["future_return_10"]
+    .agg(["mean", 'median' , 'count'])
+)
+
+print(result * 100)
+
+data["atr_pct"] = data["ATR"] / data["Close"]
+data["vol_adj_return_10"] = data["future_return_10"] / data["atr_pct"]
+result = (
+    data
+    .groupby(["pe_pct_bucket", "elder_impulse"])["vol_adj_return_10"]
+    .agg(["mean", "median", "count"])
+)
+
+print(result)
+
+expectancy = data.groupby("elder_impulse")["future_return_10"].agg(
+    mean="mean",
+    median="median",
+    count="count"
+)
+
+expectancy = expectancy * [100,100,1]  # convert returns to %
+print(expectancy)
+
+data["target10"] = (data["Close"].shift(-20) > data["Close"]).astype(int)
+
+data.groupby("elder_impulse")["target10"].mean()
+
+data['pe_spread'].plot()
+
+conditions = [
+    (data["dy_pct"] > 0.85) & (data["pe_spread"] < -0.20),
+    (data["dy_pct"] > 0.75) & (data["pe_spread"] < -0.25) & (data['elder_impulse']==-1),
+    (data["dy_pct"].between(0.25,0.75)) & (data["pe_spread"].diff(5) > 0),
+    (data["dy_pct"].between(0.25,0.75)) & (data["pe_spread"].diff(5) < 0),
+    (data["dy_pct"] < 0.25) & (data["pe_spread"] > 0.35)
+]
+
+choices = ["deep_value","value","uptrend","dntrend","expensive"]
+
+data["valuation_regime"] = np.select(conditions,choices,"neutral")
+
+data['valuation_regime'].tail(50)
+
+data.loc[data["valuation_regime"] == "value", "valuation_regime"].tail(50)
+
+data.groupby("valuation_regime")["future_return"].mean()*100
