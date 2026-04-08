@@ -413,3 +413,716 @@ A:
   - Memory layer
 
 ---
+
+
+Here’s an extended section you can append to your existing Markdown file. I’ve kept the same tone + structure and focused deeply on installation, setup, and real usage workflows so you can actually run and operate DeepTutor like a system—not just understand it.
+
+
+---
+
+---
+
+# 19. How do you install DeepTutor?
+
+**Q: What are the prerequisites before installing DeepTutor?**
+
+A:
+You need:
+
+### System Requirements
+- Python (>= 3.10 recommended)
+- Node.js (>= 18 for frontend)
+- Docker (recommended for easiest setup)
+- Git
+
+### API Keys (Important)
+- LLM provider (e.g., OpenAI / compatible APIs)
+- Embedding model provider
+
+👉 Without API keys, the system will not function fully.
+
+---
+
+**Q: What is the easiest way to install DeepTutor?**
+
+A: Use **Docker (Recommended)**
+
+### Steps:
+
+1. Clone the repository:
+```bash
+git clone https://github.com/HKUDS/DeepTutor.git
+cd DeepTutor
+
+2. Configure environment:
+
+
+
+cp .env.example .env
+
+3. Edit .env file:
+
+
+
+Add API keys
+
+Configure model providers
+
+
+4. Run with Docker:
+
+
+
+docker-compose up -d
+
+👉 This starts:
+
+Backend (FastAPI)
+
+Frontend (Next.js)
+
+Supporting services
+
+
+
+---
+
+Q: How do you install DeepTutor manually (without Docker)?
+
+A:
+
+Backend Setup
+
+cd src
+pip install -r requirements.txt
+
+Run backend:
+
+python main.py
+
+
+---
+
+Frontend Setup
+
+cd web
+npm install
+npm run dev
+
+👉 Access via:
+
+http://localhost:3000 (frontend)
+
+
+
+---
+
+20. How is configuration done?
+
+Q: What is inside the .env file?
+
+A: The .env file controls:
+
+LLM provider
+
+API keys
+
+Embedding model
+
+Database/storage configs
+
+
+Example:
+
+OPENAI_API_KEY=your_key_here
+MODEL_NAME=gpt-4
+EMBEDDING_MODEL=text-embedding-3-large
+
+
+---
+
+Q: Can you use different models?
+
+A: Yes. DeepTutor is model-agnostic.
+
+Supports:
+
+OpenAI models
+
+Local models (if configured)
+
+Other API-compatible providers
+
+
+👉 This is critical for:
+
+Cost control
+
+Experimentation
+
+
+
+---
+
+21. How do you start using DeepTutor after installation?
+
+Q: What is the first thing to do after launching?
+
+A:
+
+1. Open the web interface
+
+
+2. Create or select a knowledge base
+
+
+3. Upload documents
+
+
+
+👉 Without a knowledge base, DeepTutor has nothing to operate on.
+
+
+---
+
+22. How do you create a Knowledge Base?
+
+Q: What is a knowledge base in DeepTutor?
+
+A: A structured collection of:
+
+Documents
+
+Extracted knowledge
+
+Graph relationships
+
+
+
+---
+
+Q: Steps to create one:
+
+1. Go to Knowledge Base section
+
+
+2. Click “Create”
+
+
+3. Upload files:
+
+PDF
+
+Markdown
+
+Text
+
+
+
+4. Wait for processing
+
+
+
+👉 System performs:
+
+Chunking
+
+Embedding
+
+Graph construction
+
+
+
+---
+
+23. How do you query documents?
+
+Q: How does document Q&A work?
+
+A:
+
+1. Select a knowledge base
+
+
+2. Ask a question
+
+
+3. System:
+
+Retrieves relevant chunks (RAG)
+
+Uses knowledge graph
+
+Generates answer with context
+
+
+
+
+👉 Output includes:
+
+Explanation
+
+Context references
+
+
+
+---
+
+24. How do you use the Problem Solving mode?
+
+Q: What happens in Solve mode?
+
+A:
+
+Input a question/problem
+
+System:
+
+Breaks into steps
+
+Uses reasoning agent
+
+May call tools (code execution)
+
+
+
+👉 Output:
+
+Step-by-step solution
+
+Explanation of logic
+
+
+
+---
+
+Q: When should you use Solve mode?
+
+A:
+
+Math problems
+
+Programming
+
+Logical reasoning
+
+Case studies
+
+
+
+---
+
+25. How does Question Generation work?
+
+Q: How to generate practice questions?
+
+A:
+
+1. Select topic or document
+
+
+2. Choose:
+
+Difficulty level
+
+Question type
+
+
+
+3. Generate
+
+
+
+👉 Output:
+
+Quiz-style questions
+
+Answers + explanations
+
+
+
+---
+
+Q: Why is this important?
+
+A:
+
+Enables active recall
+
+Reinforces learning
+
+
+
+---
+
+26. How does Guided Learning work?
+
+Q: What does Guide mode do?
+
+A: Transforms content into:
+
+Topic → Subtopics → Steps → Interactive learning
+
+
+---
+
+Q: How to use it?
+
+A:
+
+1. Select topic
+
+
+2. Start guide
+
+
+3. Follow structured steps
+
+
+
+👉 System:
+
+Explains gradually
+
+Adapts based on interaction
+
+
+
+---
+
+27. How do you use Research mode?
+
+Q: What is Research mode used for?
+
+A:
+
+Deep exploration of topics
+
+Multi-source synthesis
+
+
+
+---
+
+Q: Workflow:
+
+1. Enter research question
+
+
+2. System:
+
+Searches web
+
+Retrieves papers
+
+Combines insights
+
+
+
+
+👉 Output:
+
+Structured report
+
+
+
+---
+
+28. How does Code Execution work?
+
+Q: Can DeepTutor run code?
+
+A: Yes.
+
+
+---
+
+Q: How to use it?
+
+A:
+
+1. Ask a computation/programming question
+
+
+2. System:
+
+Generates code
+
+Executes in sandbox
+
+Returns output
+
+
+
+
+
+---
+
+Q: Why is this powerful?
+
+A:
+
+Verifies answers
+
+Enables experimentation
+
+Supports technical learning
+
+
+
+---
+
+29. How does multi-agent interaction work during usage?
+
+Q: What happens behind the scenes?
+
+A: When you ask something:
+
+1. Coordinator agent decides flow
+
+
+2. Relevant agents are activated:
+
+Retriever
+
+Solver
+
+Generator
+
+Researcher
+
+
+
+3. Tools are used if needed
+
+
+
+👉 Final answer is:
+
+Synthesized output from multiple agents
+
+
+
+---
+
+30. How is user data stored?
+
+Q: Where does DeepTutor store user work?
+
+A: In structured directories:
+
+Solutions
+
+Questions
+
+Research outputs
+
+Notes
+
+Code executions
+
+
+👉 Benefit:
+
+Persistent learning record
+
+
+
+---
+
+31. How do you extend DeepTutor?
+
+Q: Can developers customize it?
+
+A: Yes.
+
+
+---
+
+Ways to extend:
+
+1. Add new tools
+
+
+2. Add new agents
+
+
+3. Modify workflows
+
+
+4. Integrate new models
+
+
+
+
+---
+
+Q: Why is this important?
+
+A: DeepTutor is:
+
+Not fixed software
+
+But a framework for building AI systems
+
+
+
+---
+
+32. What is a typical user workflow?
+
+Q: What does real usage look like?
+
+A:
+
+Example Learning Flow:
+
+1. Upload textbook
+
+
+2. Ask questions
+
+
+3. Generate quizzes
+
+
+4. Solve problems
+
+
+5. Do research
+
+
+6. Save notes
+
+
+
+
+---
+
+👉 This becomes:
+
+Input → Understand → Practice → Apply → Reflect
+
+
+---
+
+33. What are common mistakes during setup?
+
+Q: What issues might occur?
+
+A:
+
+Common Problems:
+
+Missing API keys
+
+Wrong model configuration
+
+Docker not running
+
+Port conflicts
+
+
+
+---
+
+Q: How to debug?
+
+A:
+
+Check logs
+
+Verify .env
+
+Test API connectivity
+
+
+
+---
+
+34. What is the fastest way to learn DeepTutor?
+
+Q: How should a beginner approach it?
+
+A:
+
+Step-by-step:
+
+1. Install with Docker
+
+
+2. Upload 1 PDF
+
+
+3. Try:
+
+Q&A
+
+Solve mode
+
+Question generation
+
+
+
+4. Explore research + guide modes
+
+
+
+👉 Learn by doing, not reading
+
+
+---
+
+35. What is the most practical insight from usage?
+
+Q: What changes once you start using DeepTutor?
+
+A:
+
+You stop:
+
+Searching randomly
+
+Reading passively
+
+
+You start:
+
+Interacting with knowledge
+
+Testing understanding
+
+Building structured learning loops
+
+
+
+---
+
+🚀 Final Usage Insight
+
+> DeepTutor is not a tool you “use occasionally”
+
+
+
+It is a system you:
+
+Feed knowledge into
+
+Interact with daily
+
+Grow alongside
+
+
+👉 The more you use it, the better it becomes.
+
+---
+
+If you want next level (this is where it connects *directly to your goals*):
+
+👉 I can convert this into a **“DeepTutor for Trading” operating manual**  
+→ where:
+- Knowledge base = your market data  
+- Agents = your trading system  
+- Memory = your trading journal  
+
+That would basically be your **AI trading lab OS**.
